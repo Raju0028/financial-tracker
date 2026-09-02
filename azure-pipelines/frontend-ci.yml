@@ -7,7 +7,7 @@ trigger:
       - frontend/*
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'Default'
 
 variables:
   nodeVersion: '22.22.3'
