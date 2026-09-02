@@ -1,24 +1,21 @@
 trigger: none
 
+resources:
+  pipelines:
+    - pipeline: backendCI
+      source: 'Financial Tracker - Backend CI'
+      trigger: none
+
+    - pipeline: frontendCI
+      source: 'Financial Tracker - Frontend CI'
+      trigger: none
+
 pool:
   name: 'Default'
 
-resources:
-  pipelines:
-
-  - pipeline: backendCI
-    project: CICD_POC
-    source: 'Financial Tracker - Backend CI'
-    trigger: none
-
-  - pipeline: frontendCI
-    project: CICD_POC
-    source: 'Financial Tracker - Frontend CI'
-    trigger: none
-
 variables:
   azureSubscription: 'FinancialTracker-ServiceConnection'
-  appName: 'financial-tracker-api-raj'
+  appServiceName: 'financial-tracker-api-raj'
 
 steps:
 
@@ -30,47 +27,18 @@ steps:
   artifact: frontend
   displayName: 'Download Frontend Artifact'
 
-
-- powershell: |
-
-    $backendPath = "$(Pipeline.Workspace)\backendCI\backend"
-    $frontendPath = "$(Pipeline.Workspace)\frontendCI\frontend"
-    $wwwrootPath = "$backendPath\wwwroot"
-
-    Write-Host "Backend path: $backendPath"
-    Write-Host "Frontend path: $frontendPath"
-    Write-Host "wwwroot path: $wwwrootPath"
-
-    if (Test-Path $wwwrootPath) {
-        Remove-Item $wwwrootPath -Recurse -Force
-    }
-
-    New-Item -ItemType Directory -Path $wwwrootPath -Force
-
-    Copy-Item "$frontendPath\*" `
-              "$wwwrootPath\" `
-              -Recurse `
-              -Force
-
-    Write-Host "Frontend copied successfully to backend wwwroot."
-
-  displayName: 'Copy Frontend into Backend wwwroot'
-
-
-- task: ArchiveFiles@2
-  displayName: 'Create Deployment Package'
+- task: CopyFiles@2
+  displayName: 'Copy Angular files to wwwroot'
   inputs:
-    rootFolderOrFile: '$(Pipeline.Workspace)/backendCI/backend'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/financial-tracker.zip'
-    replaceExistingArchive: true
-
+    SourceFolder: '$(Pipeline.Workspace)/frontendCI/frontend'
+    Contents: '**'
+    TargetFolder: '$(Pipeline.Workspace)/backendCI/backend/wwwroot'
+    CleanTargetFolder: true
 
 - task: AzureWebApp@1
-  displayName: 'Deploy to Azure App Service'
+  displayName: 'Deploy Financial Tracker to Azure'
   inputs:
     azureSubscription: '$(azureSubscription)'
     appType: 'webApp'
-    appName: '$(appName)'
-    package: '$(Build.ArtifactStagingDirectory)/financial-tracker.zip'
+    appName: '$(appServiceName)'
+    package: '$(Pipeline.Workspace)/backendCI/backend'
