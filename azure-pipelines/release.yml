@@ -1,5 +1,8 @@
 trigger: none
 
+pool:
+  name: 'Default'
+
 resources:
   pipelines:
     - pipeline: backendCI
@@ -10,35 +13,53 @@ resources:
       source: 'Financial Tracker - Frontend CI'
       trigger: none
 
-pool:
-  name: 'Default'
-
 variables:
   azureSubscription: 'FinancialTracker-ServiceConnection'
-  appServiceName: 'financial-tracker-api-raj'
+  appName: 'financial-tracker-api-raj'
 
 steps:
 
-- download: backendCI
-  artifact: backend
+- task: DownloadPipelineArtifact@2
   displayName: 'Download Backend Artifact'
+  inputs:
+    buildType: 'specific'
+    project: '$(System.TeamProject)'
+    definition: 'Financial Tracker - Backend CI'
+    buildVersionToDownload: 'latest'
+    artifactName: 'backend'
+    targetPath: '$(Pipeline.Workspace)/backendCI'
 
-- download: frontendCI
-  artifact: frontend
+- task: DownloadPipelineArtifact@2
   displayName: 'Download Frontend Artifact'
+  inputs:
+    buildType: 'specific'
+    project: '$(System.TeamProject)'
+    definition: 'Financial Tracker - Frontend CI'
+    buildVersionToDownload: 'latest'
+    artifactName: 'frontend'
+    targetPath: '$(Pipeline.Workspace)/frontendCI'
 
 - task: CopyFiles@2
   displayName: 'Copy Angular files to wwwroot'
   inputs:
-    SourceFolder: '$(Pipeline.Workspace)/frontendCI/frontend'
+    SourceFolder: '$(Pipeline.Workspace)/frontendCI'
     Contents: '**'
-    TargetFolder: '$(Pipeline.Workspace)/backendCI/backend/wwwroot'
+    TargetFolder: '$(Pipeline.Workspace)/backendCI/wwwroot'
     CleanTargetFolder: true
 
+- task: ArchiveFiles@2
+  displayName: 'Create Deployment Package'
+  inputs:
+    rootFolderOrFile: '$(Pipeline.Workspace)/backendCI'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/financial-tracker.zip'
+    replaceExistingArchive: true
+
 - task: AzureWebApp@1
-  displayName: 'Deploy Financial Tracker to Azure'
+  displayName: 'Deploy Financial Tracker'
   inputs:
     azureSubscription: '$(azureSubscription)'
     appType: 'webApp'
-    appName: '$(appServiceName)'
-    package: '$(Pipeline.Workspace)/backendCI/backend'
+    appName: '$(appName)'
+    package: '$(Build.ArtifactStagingDirectory)/financial-tracker.zip'
