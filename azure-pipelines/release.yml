@@ -1,0 +1,75 @@
+trigger: none
+
+pool:
+  vmImage: 'windows-latest'
+
+resources:
+
+  pipelines:
+
+  - pipeline: backendCI
+    source: Financial Tracker - Backend CI
+    trigger: none
+
+  - pipeline: frontendCI
+    source: Financial Tracker - Frontend CI
+    trigger: none
+
+variables:
+  azureSubscription: 'FinancialTracker-ServiceConnection'
+  appName: 'financial-tracker-api-raj'
+
+steps:
+
+- download: backendCI
+  artifact: backend
+  displayName: 'Download Backend Artifact'
+
+- download: frontendCI
+  artifact: frontend
+  displayName: 'Download Frontend Artifact'
+
+
+- powershell: |
+
+    $backendPath = "$(Pipeline.Workspace)\backendCI\backend"
+    $frontendPath = "$(Pipeline.Workspace)\frontendCI\frontend"
+    $wwwrootPath = "$backendPath\wwwroot"
+
+    Write-Host "Backend path: $backendPath"
+    Write-Host "Frontend path: $frontendPath"
+    Write-Host "wwwroot path: $wwwrootPath"
+
+    if (Test-Path $wwwrootPath) {
+        Remove-Item $wwwrootPath -Recurse -Force
+    }
+
+    New-Item -ItemType Directory -Path $wwwrootPath -Force
+
+    Copy-Item "$frontendPath\*" `
+              "$wwwrootPath\" `
+              -Recurse `
+              -Force
+
+    Write-Host "Frontend copied successfully to backend wwwroot."
+
+  displayName: 'Copy Frontend into Backend wwwroot'
+
+
+- task: ArchiveFiles@2
+  displayName: 'Create Deployment Package'
+  inputs:
+    rootFolderOrFile: '$(Pipeline.Workspace)/backendCI/backend'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/financial-tracker.zip'
+    replaceExistingArchive: true
+
+
+- task: AzureWebApp@1
+  displayName: 'Deploy to Azure App Service'
+  inputs:
+    azureSubscription: '$(azureSubscription)'
+    appType: 'webApp'
+    appName: '$(appName)'
+    package: '$(Build.ArtifactStagingDirectory)/financial-tracker.zip'

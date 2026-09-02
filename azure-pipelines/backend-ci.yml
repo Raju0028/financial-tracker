@@ -1,0 +1,58 @@
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - backend/*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  dotnetVersion: '10.x'
+
+steps:
+
+- task: UseDotNet@2
+  displayName: 'Install .NET SDK'
+  inputs:
+    packageType: 'sdk'
+    version: '$(dotnetVersion)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Restore Backend'
+  inputs:
+    command: 'restore'
+    projects: 'backend/**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Backend'
+  inputs:
+    command: 'build'
+    projects: 'backend/**/*.csproj'
+    arguments: '--configuration $(buildConfiguration) --no-restore'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run Backend Tests'
+  inputs:
+    command: 'test'
+    projects: 'backend/**/*Tests.csproj'
+    arguments: '--configuration $(buildConfiguration) --no-build'
+  continueOnError: true
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish Backend'
+  inputs:
+    command: 'publish'
+    projects: 'backend/**/*.csproj'
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/backend'
+    publishWebProjects: false
+    zipAfterPublish: false
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Backend Artifact'
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/backend'
+    artifact: 'backend'

@@ -36,8 +36,17 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowAngular");
 
+app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapFallbackToFile("index.html");
 
 app.Run();
