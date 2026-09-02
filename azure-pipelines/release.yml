@@ -4,15 +4,16 @@ pool:
   name: 'Default'
 
 resources:
-
   pipelines:
 
   - pipeline: backendCI
-    source: Financial Tracker - Backend CI
+    project: CICD_POC
+    source: 'Financial Tracker - Backend CI'
     trigger: none
 
   - pipeline: frontendCI
-    source: Financial Tracker - Frontend CI
+    project: CICD_POC
+    source: 'Financial Tracker - Frontend CI'
     trigger: none
 
 variables:
