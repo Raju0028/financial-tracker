@@ -44,13 +44,13 @@ steps:
   inputs:
     SourceFolder: '$(Pipeline.Workspace)/frontendCI'
     Contents: '**'
-    TargetFolder: '$(Pipeline.Workspace)/backendCI/wwwroot'
+    TargetFolder: '$(Pipeline.Workspace)/backendCI/backend/wwwroot'
     CleanTargetFolder: true
 
 - task: ArchiveFiles@2
   displayName: 'Create Deployment Package'
   inputs:
-    rootFolderOrFile: '$(Pipeline.Workspace)/backendCI'
+    rootFolderOrFile: '$(Pipeline.Workspace)/backendCI/backend'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/financial-tracker.zip'
