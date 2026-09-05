@@ -1,0 +1,18 @@
+<header class="navbar">
+
+  <div class="logo">
+    <span class="logo-icon">₹</span>
+    <span class="logo-text">Financial Tracker</span>
+  </div>
+
+  <nav class="nav-links">
+    <a routerLink="/dashboard">Dashboard</a>
+    <a routerLink="/transactions">Transactions</a>
+    <a routerLink="/reports">Reports</a>
+  </nav>
+
+  <div class="profile">
+    <button>{{ users()?.name || 'Profile' }}</button>
+  </div>
+
+</header>

@@ -14,11 +14,11 @@ public class UserController : ControllerBase
         _context = context;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetEmployees()
-    {
-        var employees = await _context.UserDetails.ToListAsync();
+    //[HttpGet]
+    //public async Task<IActionResult> GetEmployees()
+    //{
+    //    var employees = await _context.UserDetails.ToListAsync();
 
-        return Ok(employees);
-    }
+    //    return Ok(employees);
+    //}
 }

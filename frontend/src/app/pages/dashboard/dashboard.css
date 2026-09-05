@@ -1,0 +1,621 @@
+/* ================================
+   DASHBOARD
+================================ */
+
+.dashboard {
+  padding: 32px;
+  background: #e0e0e0;
+}
+
+.dashboard-header {
+  margin-bottom: 30px;
+  padding: 20px 25px;
+  background: #eff6ff;
+  border-left: 5px solid #2563eb;
+  border-radius: 12px;
+}
+
+  .dashboard-header h1 {
+    margin: 0;
+    font-size: 28px;
+  }
+
+  .dashboard-header p {
+    margin-top: 8px;
+    color: #6b7280;
+  }
+
+/* ================================
+   DASHBOARD GRID
+================================ */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+
+/* ================================
+   DASHBOARD CARD
+================================ */
+
+.dashboard-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 20px;
+  min-height: 150px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+  .dashboard-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.09);
+  }
+
+  .dashboard-card h3 {
+    margin-bottom: 10px;
+  }
+
+  .dashboard-card p {
+    color: #666;
+  }
+
+.investment-card {
+  min-height: 150px;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.owned-card {
+  min-height: 150px;
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.loan-card {
+  min-height: 150px;
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.borrowed-card {
+  min-height: 150px;
+  grid-column: 3;
+  grid-row: 2;
+}
+
+
+/* ================================
+   CARD TITLE / VALUE
+================================ */
+
+.card-title {
+  display: block;
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.card-value {
+  display: block;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+
+
+/* ================================
+   OWNED LIST TABLE
+================================ */
+
+.owned-list-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+  .owned-list-table th,
+  .owned-list-table td {
+    padding: 10px 12px;
+    text-align: left;
+  }
+
+  .owned-list-table th {
+    font-weight: 600;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .owned-list-table td {
+    font-size: 15px;
+  }
+
+
+/* ================================
+   RECENT TRANSACTIONS
+================================ */
+
+.recent-transactions {
+  margin-top: 32px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: white;
+}
+
+  .recent-transactions h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+.transaction {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+  .transaction:last-child {
+    border-bottom: none;
+  }
+
+  .transaction div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .transaction span {
+    color: #6b7280;
+  }
+
+
+/* =========================================================
+   GYM CARD
+========================================================= */
+
+.gym-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
+  grid-column: 1;
+  grid-row: 1 / 3;
+}
+
+
+/* ================================
+   GYM HEADER
+================================ */
+
+.gym-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+  .gym-card-header h2 {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .gym-card-header p {
+    margin: 5px 0 0;
+    font-size: 13px;
+    color: #6b7280;
+  }
+
+.gym-status {
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+}
+
+
+/* =========================================================
+   APPLE WATCH
+========================================================= */
+
+.gym-widget {
+  --watch-width: 300px;
+  --watch-height: 365px;
+  --titanium: #d1d5db;
+  --titanium-light: #f9fafb;
+  --titanium-dark: #9ca3af;
+  --screen-bg: #050505;
+  --banana: #facc15;
+  --green: #34c759;
+  --text-main: #ffffff;
+  --text-dim: #8e8e93;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  user-select: none;
+}
+
+
+  /* ================================
+   WATCH CONTAINER
+================================ */
+
+  .gym-widget .watch-container {
+    position: relative;
+    width: var(--watch-width);
+    height: var(--watch-height);
+    perspective: 2000px;
+  }
+
+
+  /* ================================
+   WATCH STRAP
+================================ */
+
+/*  .gym-widget .strap {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 145px;
+    height: 180px;
+    background: #1f2937;
+    border-radius: 20px;
+    z-index: 1;
+    box-shadow: inset 0 0 45px rgba(0, 0, 0, 0.35);
+  }
+
+    .gym-widget .strap.top {
+      top: -150px;
+      background: linear-gradient( to top, #111827, #374151 );
+    }
+
+    .gym-widget .strap.bottom {
+      bottom: -150px;
+      background: linear-gradient( to bottom, #111827, #374151 );
+    }
+*/
+
+  /* ================================
+   WATCH CASE
+================================ */
+
+  .gym-widget .watch-case {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient( 145deg, var(--titanium-light), var(--titanium), var(--titanium-dark) );
+    border-radius: 68px;
+    z-index: 10;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #b8bcc3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.20), inset 0 1px 1px rgba(255, 255, 255, 0.9), inset 0 -3px 10px rgba(0, 0, 0, 0.15);
+  }
+
+
+  /* ================================
+   DIGITAL CROWN
+================================ */
+
+  .gym-widget .crown-well {
+    position: absolute;
+    right: -2px;
+    top: 55px;
+    width: 12px;
+    height: 90px;
+    background: rgba(0, 0, 0, 0.18);
+    border-radius: 10px;
+    z-index: 8;
+    box-shadow: inset 2px 0 5px rgba(0, 0, 0, 0.25);
+  }
+
+  .gym-widget .crown {
+    position: absolute;
+    right: -12px;
+    top: 75px;
+    width: 20px;
+    height: 50px;
+    background: linear-gradient( to right, #9ca3af, #f3f4f6, #9ca3af );
+    border-radius: 6px;
+    z-index: 20;
+    box-shadow: 4px 2px 10px rgba(0, 0, 0, 0.18);
+  }
+
+    .gym-widget .crown::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 12px;
+      height: 12px;
+      background: radial-gradient( circle, #ffffff 30%, #9ca3af 100% );
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .gym-widget .crown::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient( 0deg, rgba(0, 0, 0, 0.08) 0, rgba(0, 0, 0, 0.08) 1px, transparent 1px, transparent 3px );
+      border-radius: 6px;
+    }
+
+
+  /* ================================
+   SIDE BUTTON
+================================ */
+
+  .gym-widget .side-btn-well {
+    position: absolute;
+    right: -2px;
+    top: 155px;
+    width: 8px;
+    height: 65px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    z-index: 8;
+    box-shadow: inset 2px 0 5px rgba(0, 0, 0, 0.12);
+  }
+
+  .gym-widget .side-btn {
+    position: absolute;
+    right: -6px;
+    top: 162px;
+    width: 9px;
+    height: 50px;
+    background: linear-gradient( to right, #9ca3af, #d1d5db );
+    border-radius: 4px;
+    z-index: 15;
+    border: 1px solid #8e939c;
+  }
+
+
+  /* ================================
+   ACTION BUTTON
+================================ */
+
+  .gym-widget .action-btn-well {
+    position: absolute;
+    left: -2px;
+    top: 125px;
+    width: 8px;
+    height: 90px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    z-index: 8;
+    box-shadow: inset -2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .gym-widget .action-btn {
+    position: absolute;
+    left: -6px;
+    top: 135px;
+    width: 9px;
+    height: 70px;
+    background: linear-gradient( to left, #facc15, #fde047 );
+    border-radius: 4px;
+    z-index: 15;
+    border: 1px solid #ca8a04;
+  }
+
+
+  /* ================================
+   WATCH DISPLAY
+================================ */
+
+  .gym-widget .display-unit {
+    width: 100%;
+    height: 100%;
+    background: var(--screen-bg);
+    border-radius: 58px;
+    overflow: hidden;
+    position: relative;
+    border: 5px solid #000;
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.03);
+  }
+
+
+  /* ================================
+   STATUS BAR
+================================ */
+
+  .gym-widget .status-bar {
+    position: absolute;
+    top: 24px;
+    left: 0;
+    right: 0;
+    padding: 0 45px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 800;
+    color: white;
+    z-index: 20;
+  }
+
+  .gym-widget .battery {
+    color: var(--green);
+  }
+
+
+/* =========================================================
+   STATIC GYM CONTENT
+========================================================= */
+
+.gym-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  padding: 50px 25px 25px;
+  box-sizing: border-box;
+}
+
+
+/* WORKOUT */
+
+.workout-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #9ca3af;
+}
+
+.workout-name {
+  margin-top: 8px;
+  font-size: 46px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+
+/* DATE */
+
+.workout-date {
+  margin-top: 25px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #d1d5db;
+}
+
+
+/* CARDIO */
+
+.cardio-section {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cardio-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #9ca3af;
+}
+
+.cardio-value {
+  margin-top: 5px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #34c759;
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 900px) {
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gym-card {
+    grid-row: auto;
+  }
+}
+
+
+/* =========================================
+   MOBILE FIX
+========================================= */
+
+@media (max-width: 768px) {
+
+  /* Page should use full phone width */
+  .dashboard {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    padding: 16px;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  /* One column on mobile */
+  .dashboard-grid {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* Every card uses full available width */
+  .gym-card,
+  .dashboard-card {
+    width: 100%;
+    min-width: 0;
+    grid-column: 1 !important;
+    grid-row: auto !important;
+    box-sizing: border-box;
+  }
+
+  /* Don't force huge card heights */
+  .dashboard-card {
+    min-height: 0;
+    height: auto;
+  }
+
+  /* Gym card */
+  .gym-card {
+    padding: 16px;
+    overflow: hidden;
+  }
+
+  /* Watch wrapper */
+  .gym-widget {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+    /* Watch size */
+    .gym-widget .watch-container {
+      width: 270px;
+      height: 328px;
+      flex-shrink: 0;
+    }
+
+  /* Header */
+  .dashboard-header {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Owned list */
+  .owned-list-table {
+    width: 100%;
+  }
+}
