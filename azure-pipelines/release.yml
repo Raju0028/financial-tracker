@@ -56,6 +56,23 @@ steps:
     archiveFile: '$(Build.ArtifactStagingDirectory)/financial-tracker.zip'
     replaceExistingArchive: true
 
+- task: DownloadSecureFile@1
+  displayName: 'Download Google Sheets Credentials'
+  name: googleCredentials
+  inputs:
+    secureFile: 'finance-tracker-507512-d6cf72cd0db6.json'
+
+- script: |
+    echo "Google credentials downloaded to: $(googleCredentials.secureFilePath)"
+  displayName: 'Verify Google Credentials Path'
+
+- task: CopyFiles@2
+  displayName: 'Copy Google Credentials'
+  inputs:
+    SourceFolder: '$(Agent.TempDirectory)'
+    Contents: 'finance-tracker-507512-d6cf72cd0db6.json'
+    TargetFolder: '$(Pipeline.Workspace)/backendCI/backend'
+
 - task: AzureWebApp@1
   displayName: 'Deploy Financial Tracker'
   inputs:

@@ -15,7 +15,6 @@ public class GoogleSheetsService
 
     public GoogleSheetsService(IConfiguration configuration)
     {
-
         var credentialsPath =
             configuration["GoogleSheets:CredentialsPath"]
             ?? throw new InvalidOperationException(
@@ -23,7 +22,7 @@ public class GoogleSheetsService
 
         GoogleCredential credential =
             GoogleCredential.FromFile(credentialsPath)
-            .CreateScoped(SheetsService.Scope.Spreadsheets);
+                .CreateScoped(SheetsService.Scope.Spreadsheets);
 
         _sheetsService = new SheetsService(new BaseClientService.Initializer
         {
