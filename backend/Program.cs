@@ -1,4 +1,5 @@
 using FinancialTracker.Data;
+using FinancialTracker.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Add services to the container
 builder.Services.AddControllers();
+
+builder.Services.AddSingleton<GoogleSheetsService>();
 
 // Add OpenAPI
 builder.Services.AddOpenApi();

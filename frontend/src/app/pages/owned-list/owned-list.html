@@ -1,0 +1,223 @@
+<div class="owned-list-page">
+  <!-- ========================= PAGE HEADER ========================== -->
+  <div class="page-header">
+    <div>
+      <h1>Owned List</h1>
+      <p>
+        Manage your owned items and investments.
+      </p>
+    </div>
+    <button type="button" class="add-button" (click)="openAddModal()">+ Add Owned Item</button>
+  </div>
+
+  <!-- ========================= OWNED LIST TABLE ========================== -->
+
+  <div class="owned-list-table-container">
+    <table class="owned-list-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Item</th>
+          <th>Cost</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Comments</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        @for ( ownedList of ownedLists(); track ownedList.rowNumber)
+        {
+        <tr>
+          <!-- Date -->
+          <td>
+            {{ ownedList.date }}
+          </td>
+          <!-- Item -->
+          <td>
+            <strong>
+              {{ ownedList.item }}
+            </strong>
+          </td>
+          <!-- Cost -->
+          <td>
+            ₹{{ ownedList.cost | number }}
+          </td>
+          <!-- Amount -->
+          <td>
+            {{ ownedList.amount || '-' }}
+          </td>
+          <!-- Status -->
+          <td>
+            <span class="status" [class.completed]="ownedList.status === 'completed'"
+                  [class.pending]="ownedList.status === 'pending'"
+                  [class.paid]="ownedList.status === 'paid loan' ">
+              {{ ownedList.status }}
+            </span>
+          </td>
+          <!-- Comments -->
+          <td>
+            {{ ownedList.comments || '-' }}
+          </td>
+          <!-- Actions -->
+          <td>
+            <div class="table-actions">
+              <button type="button" class="edit-button" (click)="openEditModal(ownedList)"> Edit </button>
+              <button type="button" class="delete-button" (click)="deleteOwnedList(ownedList)"> Delete</button>
+            </div>
+          </td>
+        </tr>
+        }
+
+        <!-- ========================= EMPTY STATE ========================== -->
+        @if (ownedLists().length === 0) {
+        <tr>
+          <td colspan="7" class="empty-state"> No owned items found. </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ================================= ADD / EDIT OWNED ITEM MODAL ============================== -->
+
+<div class="modal-overlay" *ngIf="showAddModal()" (click)="closeAddModal()">
+ <div class="modal-card" (click)="$event.stopPropagation()">
+
+   <!-- ========================= MODAL HEADER ========================== -->
+
+    <div class="modal-header">
+      <div>
+        <h2>
+          {{
+            isEditMode()
+              ? 'Edit Owned Item'
+              : 'Add Owned Item'
+          }}
+        </h2>
+        <p>
+          {{
+            isEditMode()
+              ? 'Update your owned item details.'
+              : 'Add a new item to your owned list.'
+          }}
+        </p>
+      </div>
+      <!-- Close -->
+      <button type="button" class="close-button" (click)="closeAddModal()"> × </button>
+    </div>
+
+    <!-- =========================  FORM ========================== -->
+
+    <form #ownedForm="ngForm" (ngSubmit)="saveOwnedList()">
+      <div class="form-grid">
+
+        <!-- ========== DATE ============ -->
+
+        <div class="form-group">
+          <label for="date"> Date <span class="required">*</span> </label>
+          <input id="date"
+                 type="date"
+                 name="date"
+                 [(ngModel)]="newOwnedList.date"
+                 required />
+        </div>
+
+        <!-- ============= ITEM ============= -->
+
+        <div class="form-group">
+          <label for="item"> Item <span class="required">*</span> </label>
+          <input id="item"
+                 type="text"
+                 name="item"
+                 placeholder="Example: Apple Watch"
+                 [(ngModel)]="newOwnedList.item"
+                 required />
+        </div>
+
+        <!-- ============== COST ============ -->
+
+        <div class="form-group">
+          <label for="cost">  Cost <span class="required">*</span> </label>
+          <div class="cost-input">
+          <span>₹</span>
+            <input id="cost"
+                   type="number"
+                   name="cost"
+                   placeholder="15000"
+                   [(ngModel)]="newOwnedList.cost"
+                   min="0"
+                   required />
+          </div>
+        </div>
+
+        <!-- ============ AMOUNT ================ -->
+
+        <div class="form-group">
+          <label for="amount"> Amount <span class="required">*</span> </label>
+          <input id="amount"
+                 type="text"
+                 name="amount"
+                 placeholder="Cash / Loan / Gold Loan"
+                 [(ngModel)]="newOwnedList.amount"
+                 required />
+
+        </div>
+
+        <!-- =========== STATUS =============== -->
+
+        <div class="form-group">
+          <label for="status"> Status <span class="required">*</span> </label>
+          <select id="status"
+                  name="status"
+                  [(ngModel)]="newOwnedList.status"
+                  required>
+
+            <option value="">
+              Select Status
+            </option>
+            <option value="completed">
+              Completed
+            </option>
+            <option value="pending">
+              Pending
+            </option>
+            <option value="paid loan">
+              Paid Loan
+            </option>
+          </select>
+        </div>
+
+        <!-- ========== COMMENTS ============= -->
+
+        <div class="form-group full-width">
+          <label for="comments"> Comments </label>
+          <textarea id="comments"
+                    name="comments"
+                    rows="4"
+                    placeholder="Add comments..."
+                    [(ngModel)]="newOwnedList.comments">
+          </textarea>
+        </div>
+      </div>
+
+      <!-- =========== MODAL ACTIONS ================ -->
+
+      <div class="modal-actions">
+        <!-- Cancel -->
+        <button type="button" class="cancel-button" (click)="closeAddModal()"> Cancel </button>
+        <!-- Add / Update -->
+
+        <button type="submit" class="save-button" [disabled]="ownedForm.invalid">
+          {{
+            isEditMode()
+              ? 'Update Owned Item'
+              : '+ Add Owned Item'
+          }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
