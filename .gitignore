@@ -6,6 +6,12 @@
 **/bin/
 **/obj/
 
+# .NET publish / deployment files
+**/publish/
+**/dotnet-publish/
+**/Properties/PublishProfiles/
+**/Properties/ServiceDependencies/
+
 # Visual Studio
 .vs/
 *.user
@@ -59,3 +65,6 @@ yarn-error.log*
 
 .DS_Store
 Thumbs.db
+
+# Google Sheets credentials
+finance-tracker-*.json

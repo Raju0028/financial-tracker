@@ -15,15 +15,14 @@ public class GoogleSheetsService
 
     public GoogleSheetsService(IConfiguration configuration)
     {
-
-        var credentialsPath =
-            configuration["GoogleSheets:CredentialsPath"]
+        var credentialsJson =
+            configuration["GoogleSheets:CredentialsJson"]
             ?? throw new InvalidOperationException(
-                "Google Sheets credentials path is not configured.");
+                "Google Sheets credentials are not configured.");
 
         GoogleCredential credential =
-            GoogleCredential.FromFile(credentialsPath)
-            .CreateScoped(SheetsService.Scope.Spreadsheets);
+            GoogleCredential.FromJson(credentialsJson)
+                .CreateScoped(SheetsService.Scope.Spreadsheets);
 
         _sheetsService = new SheetsService(new BaseClientService.Initializer
         {
