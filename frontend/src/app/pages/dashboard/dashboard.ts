@@ -8,9 +8,13 @@ import { OwnedList } from '../../../models/owned-list';
 import { Router } from '@angular/router';
 import { LoanService } from '../../../services/Loan.service';
 import { LoanSummary } from '../../../models/loan-summary';
+import { DatePipe } from '@angular/common';
+import { MonthlyInvestmentService } from '../../../services/MonthlyInvestment.service';
+import { MonthlyInvestment } from '../../../models/monthly-investment';
 
 @Component({
   imports: [CommonModule, RouterLink],
+  providers: [DatePipe],
   standalone: true,
   selector: 'app-dashboard',
   styleUrls: ['./dashboard.css'],
@@ -23,25 +27,29 @@ export class Dashboard implements OnInit {
   private readonly googleSheetsService = inject(GoogleSheetsService);
   private readonly router = inject(Router);
   private readonly loanService = inject(LoanService);
+  private readonly monthlyInvestmentService = inject(MonthlyInvestmentService);
 
+  currentDate = signal(
+    new Date().toISOString().split('T')[0]
+  );
   transactions: Transaction[] = [];
   lastOwnedList = signal<OwnedList | null>(null);
   ownedLists: OwnedList[] = [];
   loanSummary = signal<LoanSummary | null>(null);
+  monthlyInvestment = signal<MonthlyInvestment | null>(null);
+
   // Expose a simple non-callable property for templates to avoid template type-checker issues
   get lastOwned(): OwnedList | null {
     return this.lastOwnedList();
   }
 
   totalIncome = 50000;
-  totalExpenses = 32500;
-  balance = 17500;
-
 
   ngOnInit(): void {
     this.loadTransactions();
     this.loadOwnedLists();
     this.loadLoanSummary();
+    this.loadMonthlyInvestment();
   }
 
   private loadTransactions(): void {
@@ -91,6 +99,18 @@ export class Dashboard implements OnInit {
       },
       error: (error) => {
         console.error('Error loading loan summary:', error);
+      }
+    });
+  }
+
+  private loadMonthlyInvestment(): void {
+    this.monthlyInvestmentService.getMonthlyInvestment().subscribe({
+      next: (data) => {
+        this.monthlyInvestment.set(data);
+        console.log('Monthly investment loaded:', data);
+      },
+      error: (error) => {
+        console.error('Error loading monthly investment:', error);
       }
     });
   }
