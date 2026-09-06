@@ -1,0 +1,259 @@
+/* ================= PAGE ================= */
+
+.monthly-investment-page {
+  padding: 30px 40px;
+  background: #e5e5e5;
+  min-height: 100%;
+}
+
+
+/* ================= HEADER ================= */
+
+.page-header {
+  margin-bottom: 25px;
+}
+
+  .page-header h1 {
+    margin: 0;
+    font-size: 32px;
+    color: #111827;
+  }
+
+  .page-header p {
+    margin: 5px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+  }
+
+
+/* ================= SUMMARY ================= */
+
+.investment-summary-card {
+  width: 100%;
+  max-width: 100%;
+  min-height: 150px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  border-radius: 16px;
+  box-sizing: border-box;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+
+/* ================= BANK DETAILS ================= */
+
+.investment-banks {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 30px;
+  gap: 12px;
+}
+
+.summary-bank {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 520px;
+}
+
+  .summary-bank span {
+    font-size: 14px;
+    color: #6b7280;
+  }
+
+  .summary-bank strong {
+    font-size: 17px;
+    color: #111827;
+  }
+
+
+/* ================= TOTAL ================= */
+
+.summary-total {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-left: 1px solid #e5e7eb;
+}
+
+  .summary-total span {
+    font-size: 14px;
+    color: #6b7280;
+  }
+
+  .summary-total strong {
+    margin-top: 8px;
+    font-size: 26px;
+    font-weight: 700;
+    color: #2563eb;
+  }
+
+
+/* ================= EXPENSE SECTION ================= */
+
+.investment-section {
+  margin-top: 30px;
+}
+
+.section-header {
+  margin-bottom: 15px;
+}
+
+  .section-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #111827;
+  }
+
+
+/* ================= TABLE ================= */
+
+.investment-table-container {
+  width: 70%;
+  max-width: 900px;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.investment-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+  .investment-table th {
+    padding: 14px 18px;
+    text-align: left;
+    background: #eff6ff;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .investment-table td {
+    padding: 13px 18px;
+    color: #374151;
+    font-size: 14px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+    .investment-table th:last-child,
+    .investment-table td:last-child {
+      text-align: right;
+    }
+
+  .investment-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .investment-table tbody tr:hover {
+    background: #f9fafb;
+  }
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+  .monthly-investment-page {
+    padding: 20px;
+  }
+
+  .page-header h1 {
+    font-size: 28px;
+  }
+
+  .investment-summary-card {
+    grid-template-columns: 1fr;
+  }
+
+  .investment-banks {
+    padding: 20px;
+  }
+
+  .summary-bank {
+    max-width: none;
+  }
+
+  .summary-total {
+    border-left: none;
+    border-top: 1px solid #e5e7eb;
+    padding: 20px;
+  }
+
+  .investment-table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .investment-table {
+    min-width: 450px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .monthly-investment-page {
+    padding: 20px;
+  }
+
+  .page-header h1 {
+    font-size: 28px;
+  }
+
+  .investment-summary-card {
+    grid-template-columns: 1fr;
+  }
+
+  .investment-banks {
+    padding: 20px;
+  }
+
+  .summary-bank {
+    max-width: none;
+  }
+
+  .summary-total {
+    border-left: none;
+    border-top: 1px solid #e5e7eb;
+    padding: 20px;
+  }
+
+  /* ================= MOBILE TABLE ================= */
+
+  .investment-table-container {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .investment-table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+  }
+
+    .investment-table th,
+    .investment-table td {
+      padding: 12px 14px;
+      font-size: 14px;
+    }
+
+      .investment-table th:first-child,
+      .investment-table td:first-child {
+        width: 60%;
+        text-align: left;
+      }
+
+      .investment-table th:last-child,
+      .investment-table td:last-child {
+        width: 40%;
+        text-align: right;
+        white-space: nowrap;
+      }
+}

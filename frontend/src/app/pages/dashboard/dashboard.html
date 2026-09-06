@@ -8,8 +8,8 @@
 
       <div class="gym-card-header">
         <div>
-          <h2>Gym</h2>
-          <p>Today's fitness activity</p>
+          <h2>Financial Dashboard</h2>
+          <p>Today's financial activity</p>
         </div>
 
         <span class="gym-status">
@@ -55,17 +55,11 @@
               <!-- Gym Information -->
               <div class="gym-content">
 
-                <div class="workout-label">WORKOUT</div>
+                <div class="workout-label">Hello</div>
 
-                <div class="workout-name">CHEST</div>
+                <div class="workout-name">Raju</div>
 
-                <div class="workout-date">04/09/2026</div>
-
-                <div class="cardio-section">
-                  <span class="cardio-label">CARDIO</span>
-                  <span class="cardio-value">YES</span>
-                </div>
-
+                <div class="workout-date">{{ currentDate() }}</div>
               </div>
             </div>
 
@@ -185,17 +179,46 @@
     </div>
 
     <!-- ================= MONEY BORROWED ================= -->
+    <!-- ================= MONTHLY INVESTMENT ================= -->
 
-    <div class="dashboard-card borrowed-card">
+    <div class="dashboard-card monthly-investment-card"
+         routerLink="/monthly-investment">
 
       <h2>
-        Money Borrowed
+        Monthly Investment
       </h2>
 
-      <p>
-        Click to view borrowed money
-      </p>
+      <div class="monthly-investment-summary">
 
+        <div class="investment-bank">
+          <span>AU Bank</span>
+          <strong>
+            ₹{{ monthlyInvestment()?.auBank | number:'1.0-2' }}
+          </strong>
+        </div>
+
+        <div class="investment-bank">
+          <span>CC Bank</span>
+          <strong>
+            ₹{{ monthlyInvestment()?.ccBank | number:'1.0-2' }}
+          </strong>
+        </div>
+
+        <div class="investment-bank">
+          <span>IDFC Bank</span>
+          <strong>
+            ₹{{ monthlyInvestment()?.idfcBank | number:'1.0-2' }}
+          </strong>
+        </div>
+
+        <div class="investment-total">
+          <span>Total Amount</span>
+          <strong>
+            ₹{{ monthlyInvestment()?.totalAmount | number:'1.0-2' }}
+          </strong>
+        </div>
+
+      </div>
     </div>
 
 
