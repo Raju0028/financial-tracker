@@ -1,0 +1,183 @@
+<div class="monthly-investment-page">
+
+  <!-- ================= HEADER ================= -->
+
+  <div class="page-header">
+    <h1>Monthly Investment</h1>
+
+    <p>
+      Monthly investment and expense details
+    </p>
+  </div>
+
+
+  <!-- ================= SUMMARY ================= -->
+
+  <div class="investment-summary-card">
+
+    <!-- Left side -->
+
+    <div class="investment-banks">
+
+      <div class="summary-bank">
+        <span>AU Bank</span>
+        <strong>
+          ₹{{ monthlyInvestment()?.auBank | number:'1.0-2' }}
+        </strong>
+      </div>
+
+      <div class="summary-bank">
+        <span>CC Bank</span>
+        <strong>
+          ₹{{ monthlyInvestment()?.ccBank | number:'1.0-2' }}
+        </strong>
+      </div>
+
+      <div class="summary-bank">
+        <span>IDFC Bank</span>
+        <strong>
+          ₹{{ monthlyInvestment()?.idfcBank | number:'1.0-2' }}
+        </strong>
+      </div>
+
+    </div>
+
+
+    <!-- Right side -->
+
+    <div class="summary-total">
+
+      <span>Total Amount</span>
+
+      <strong>
+        ₹{{ monthlyInvestment()?.totalAmount | number:'1.0-2' }}
+      </strong>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= EXPENSE TABLE ================= -->
+
+  <div class="investment-section">
+
+    <div class="section-header">
+      <h2>Monthly Expenses</h2>
+    </div>
+
+
+    <div class="investment-table-container">
+
+      <table class="investment-table">
+
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+
+
+        <tbody>
+
+          <tr>
+            <td>Gas Used</td>
+            <td>
+              ₹{{ monthlyInvestment()?.gasUsed | number:'1.0-2' }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>Electricity</td>
+            <td>
+              ₹{{ monthlyInvestment()?.electricity | number:'1.0-2' }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>Mobile</td>
+            <td>
+              ₹{{ monthlyInvestment()?.mobile | number:'1.0-2' }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>Gift</td>
+            <td>
+              ₹{{ monthlyInvestment()?.gift | number:'1.0-2' }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>Car Service</td>
+            <td>
+              ₹{{ monthlyInvestment()?.carService | number:'1.0-2' }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>Car Insurance</td>
+            <td>
+              ₹{{ monthlyInvestment()?.carInsurance | number:'1.0-2' }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>Bike</td>
+            <td>
+              ₹{{ monthlyInvestment()?.bike | number:'1.0-2' }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>CNG</td>
+            <td>
+              ₹{{ monthlyInvestment()?.cng | number:'1.0-2' }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>WIFI</td>
+            <td>
+              ₹{{ monthlyInvestment()?.wifi | number:'1.0-2' }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>Tour</td>
+            <td>
+              ₹{{ monthlyInvestment()?.tour | number:'1.0-2' }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>Friends Tour</td>
+            <td>
+              ₹{{ monthlyInvestment()?.friendsTour | number:'1.0-2' }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>House Product</td>
+            <td>
+              ₹{{ monthlyInvestment()?.houseProduct | number:'1.0-2' }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>Emergency AMT</td>
+            <td>
+              ₹{{ monthlyInvestment()?.emergencyAmount | number:'1.0-2' }}
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

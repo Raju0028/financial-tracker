@@ -4,6 +4,7 @@ import { Expenses } from './pages/expenses/expenses';
 import { Loan } from './pages/loan/loan';
 import { MoneyBorrowed } from './pages/money-borrowed/money-borrowed';
 import { OwnedList } from './pages/owned-list/owned-list';
+import { MonthlyInvestmentPage } from './pages/monthly-investment/monthly-investment';
 
 
 export const routes: Routes = [
@@ -31,5 +32,10 @@ export const routes: Routes = [
   {
     path: 'owned-list',
     component: OwnedList
+  },
+  {
+    path: 'monthly-investment',
+    component: MonthlyInvestmentPage
   }
+
 ];
