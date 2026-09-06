@@ -619,3 +619,127 @@
     width: 100%;
   }
 }
+
+/* ================= LOAN CARD ================= */
+
+.loan-card {
+  overflow: hidden;
+}
+
+.loan-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  width: fit-content;
+  margin: 15px auto 0;
+}
+
+/* Speedometer */
+
+.loan-gauge {
+  position: relative;
+  width: 150px;
+  height: 85px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+  .loan-gauge::before {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: conic-gradient( from 270deg, #2563eb 0deg, #2563eb calc(var(--loan-progress, 0) * 1.8deg), #e5e7eb calc(var(--loan-progress, 0) * 1.8deg), #e5e7eb 180deg, transparent 180deg );
+  }
+
+  .loan-gauge::after {
+    content: '';
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    left: 20px;
+    top: 20px;
+    border-radius: 50%;
+    background: white;
+  }
+
+.gauge-value {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  text-align: center;
+  top: 42px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.gauge-label {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  text-align: center;
+  top: 68px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* Loan details */
+
+.loan-details {
+  flex: none;
+  width: 145px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+  .loan-detail span {
+    font-size: 12px;
+    color: #6b7280;
+  }
+
+  .loan-detail strong {
+    font-size: 17px;
+    color: #111827;
+  }
+
+  .loan-detail.monthly {
+    margin-top: 3px;
+  }
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .loan-content {
+    gap: 12px;
+  }
+
+  .loan-gauge {
+    width: 125px;
+    height: 75px;
+  }
+
+    .loan-gauge::before {
+      width: 125px;
+      height: 125px;
+    }
+
+    .loan-gauge::after {
+      width: 90px;
+      height: 90px;
+      left: 17.5px;
+      top: 17.5px;
+    }
+
+  .gauge-value {
+    top: 38px;
+    font-size: 19px;
+  }
+
+  .gauge-label {
+    top: 61px;
+  }
+}

@@ -96,82 +96,110 @@
     <div class="dashboard-card  owned-card"
          (click)="goToOwnedList()">
 
-        <span class="card-title">
-          Owned List
-        </span>
+      <span class="card-title">
+        Owned List
+      </span>
 
-        @if (lastOwnedList()) {
+      @if (lastOwnedList()) {
 
-        <table class="owned-list-table">
+      <table class="owned-list-table">
 
-          <thead>
+        <thead>
 
-            <tr>
-              <th>Date</th>
-              <th>Cost</th>
-              <th>Reason</th>
-            </tr>
+          <tr>
+            <th>Date</th>
+            <th>Cost</th>
+            <th>Reason</th>
+          </tr>
 
-          </thead>
+        </thead>
 
-          <tbody>
+        <tbody>
 
-            <tr>
+          <tr>
 
-              <td>
-                {{ lastOwnedList()!.date }}
-              </td>
+            <td>
+              {{ lastOwnedList()!.date }}
+            </td>
 
-              <td>
-                ₹{{ lastOwnedList()!.cost }}
-              </td>
+            <td>
+              ₹{{ lastOwnedList()!.cost }}
+            </td>
 
-              <td>
-                {{ lastOwnedList()!.item }}
-              </td>
+            <td>
+              {{ lastOwnedList()!.item }}
+            </td>
 
-            </tr>
+          </tr>
 
-          </tbody>
+        </tbody>
 
-        </table>
+      </table>
 
-        }
-
-      </div>
-
-
-      <!-- ================= LOAN ================= -->
-
-      <div class="dashboard-card loan-card">
-
-        <h2>
-          Loan
-        </h2>
-
-        <p>
-          Click to view loans
-        </p>
-
-      </div>
-
-
-      <!-- ================= MONEY BORROWED ================= -->
-
-      <div class="dashboard-card borrowed-card">
-
-        <h2>
-          Money Borrowed
-        </h2>
-
-        <p>
-          Click to view borrowed money
-        </p>
-
-      </div>
-
+      }
 
     </div>
+
+
+    <!-- ================= LOAN ================= -->
+
+    <div class="dashboard-card loan-card" routerLink="/loan">
+      <h2>Loan</h2>
+      <div class="loan-content">
+        <!-- Speedometer -->
+        <div class="loan-gauge"
+             [style.--loan-progress]="loanSummary()?.paidPercentage ?? 0">
+          <div class="gauge-value">
+            {{ loanSummary()?.paidPercentage | number:'1.0-0' }}%
+          </div>
+          <div class="gauge-label">
+            Paid
+          </div>
+        </div>
+
+        <!-- Loan details -->
+        <div class="loan-details">
+
+          <div class="loan-detail">
+            <span>Paid</span>
+            <strong>
+              ₹{{ loanSummary()?.totalPaid | number:'1.0-0' }}
+            </strong>
+          </div>
+
+          <div class="loan-detail">
+            <span>Balance</span>
+            <strong>
+              ₹{{ loanSummary()?.balance | number:'1.0-0' }}
+            </strong>
+          </div>
+
+          <div class="loan-detail monthly">
+            <span>Paid This Month</span>
+            <strong>
+              ₹{{ loanSummary()?.paidThisMonth | number:'1.0-0' }}
+            </strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= MONEY BORROWED ================= -->
+
+    <div class="dashboard-card borrowed-card">
+
+      <h2>
+        Money Borrowed
+      </h2>
+
+      <p>
+        Click to view borrowed money
+      </p>
+
+    </div>
+
+
+  </div>
   <section class="recent-transactions">
     <h2>Recent Transactions</h2>
 

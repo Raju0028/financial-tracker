@@ -3,6 +3,7 @@ using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using FinancialTracker.Models;
 using System.Globalization;
+using System.Text;
 
 namespace FinancialTracker.Services;
 
@@ -15,20 +16,24 @@ public class GoogleSheetsService
 
     public GoogleSheetsService(IConfiguration configuration)
     {
-        var credentialsJson =
-            configuration["GoogleSheets:CredentialsJson"]
+        var credentialsBase64 =
+            configuration["GoogleSheets:CredentialsBase64"]
             ?? throw new InvalidOperationException(
                 "Google Sheets credentials are not configured.");
 
+        var credentialsJson = Encoding.UTF8.GetString(
+            Convert.FromBase64String(credentialsBase64));
+
         GoogleCredential credential =
             GoogleCredential.FromJson(credentialsJson)
-                .CreateScoped(SheetsService.Scope.Spreadsheets);
+            .CreateScoped(SheetsService.Scope.Spreadsheets);
 
-        _sheetsService = new SheetsService(new BaseClientService.Initializer
-        {
-            HttpClientInitializer = credential,
-            ApplicationName = "Financial Tracker"
-        });
+        _sheetsService = new SheetsService(
+            new BaseClientService.Initializer
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = "Financial Tracker"
+            });
     }
 
     public async Task<List<Transaction>> GetTransactionsAsync()

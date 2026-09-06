@@ -6,9 +6,11 @@ import { RouterLink } from '@angular/router';
 import { GoogleSheetsService } from '../../../services/GoogleSheets.service';
 import { OwnedList } from '../../../models/owned-list';
 import { Router } from '@angular/router';
+import { LoanService } from '../../../services/Loan.service';
+import { LoanSummary } from '../../../models/loan-summary';
 
 @Component({
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   standalone: true,
   selector: 'app-dashboard',
   styleUrls: ['./dashboard.css'],
@@ -20,10 +22,12 @@ export class Dashboard implements OnInit {
   private readonly apiService = inject(ApiService);
   private readonly googleSheetsService = inject(GoogleSheetsService);
   private readonly router = inject(Router);
+  private readonly loanService = inject(LoanService);
 
   transactions: Transaction[] = [];
   lastOwnedList = signal<OwnedList | null>(null);
   ownedLists: OwnedList[] = [];
+  loanSummary = signal<LoanSummary | null>(null);
   // Expose a simple non-callable property for templates to avoid template type-checker issues
   get lastOwned(): OwnedList | null {
     return this.lastOwnedList();
@@ -36,7 +40,8 @@ export class Dashboard implements OnInit {
 
   ngOnInit(): void {
     this.loadTransactions();
-    this.loadOwnedLists();  
+    this.loadOwnedLists();
+    this.loadLoanSummary();
   }
 
   private loadTransactions(): void {
@@ -74,6 +79,18 @@ export class Dashboard implements OnInit {
     this.router.navigate(['/owned-list'], {
       state: {
         ownedLists: this.ownedLists
+      }
+    });
+  }
+
+  private loadLoanSummary(): void {
+    this.loanService.getLoanSummary().subscribe({
+      next: (data) => {
+        this.loanSummary.set(data);
+        console.log('Loan summary loaded:', data);
+      },
+      error: (error) => {
+        console.error('Error loading loan summary:', error);
       }
     });
   }
