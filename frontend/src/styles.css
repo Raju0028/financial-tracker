@@ -1,1 +1,243 @@
-/* You can add global styles to this file, and also import other style files */
+/* =========================================================
+   SHARED MODAL
+   Used by Loan, Owned List, Repayment and future modals
+   ========================================================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 650px;
+  max-height: 90vh;
+  background: #ffffff;
+  border-radius: 24px;
+  border-top: 5px solid #2563eb;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   MODAL HEADER
+   ========================================================= */
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 22px 25px;
+  background: #eff6ff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+  .modal-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #111827;
+  }
+
+  .modal-header p {
+    margin: 6px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+  }
+
+
+/* =========================================================
+   CLOSE BUTTON
+   ========================================================= */
+
+.close-button {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #374151;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+  .close-button:hover {
+    background: #e5e7eb;
+  }
+
+
+/* =========================================================
+   MODAL FORM
+   ========================================================= */
+
+.modal-card form {
+  padding: 25px;
+  max-height: calc(90vh - 150px);
+  overflow-y: auto;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+  .form-group.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #111827;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+  }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+  .form-group textarea {
+    resize: vertical;
+  }
+
+
+/* =========================================================
+   CURRENCY INPUT
+   ========================================================= */
+
+.cost-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+  .cost-input span {
+    position: absolute;
+    left: 13px;
+    color: #6b7280;
+    font-weight: 600;
+  }
+
+  .cost-input input {
+    padding-left: 30px;
+  }
+
+
+/* =========================================================
+   MODAL ACTIONS
+   ========================================================= */
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.cancel-button,
+.save-button {
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancel-button {
+  background: #ffffff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+  .cancel-button:hover {
+    background: #f3f4f6;
+  }
+
+.save-button {
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+}
+
+  .save-button:hover {
+    background: #1d4ed8;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+  }
+
+  .save-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .modal-overlay {
+    padding: 12px;
+  }
+
+  .modal-card {
+    max-height: 95vh;
+    border-radius: 18px;
+  }
+
+  .modal-header {
+    padding: 18px;
+  }
+
+    .modal-header h2 {
+      font-size: 21px;
+    }
+
+  .modal-card form {
+    padding: 18px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .modal-actions {
+    margin-top: 20px;
+  }
+}

@@ -13,6 +13,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddControllers();
 
 builder.Services.AddSingleton<GoogleSheetsService>();
+builder.Services.AddSingleton<LoanService>();
 
 // Add OpenAPI
 builder.Services.AddOpenApi();
