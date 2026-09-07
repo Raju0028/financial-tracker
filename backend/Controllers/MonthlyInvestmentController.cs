@@ -1,5 +1,6 @@
 using FinancialTracker.Services;
 using Microsoft.AspNetCore.Mvc;
+using FinancialTracker.Models;
 
 namespace FinancialTracker.Controllers;
 
@@ -22,5 +23,29 @@ public class MonthlyInvestmentController : ControllerBase
             await _monthlyInvestmentService.GetMonthlyInvestmentAsync();
 
         return Ok(monthlyInvestment);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddMonthlyInvestment(
+    [FromBody] AddMonthlyInvestment request)
+    {
+        await _monthlyInvestmentService
+            .AddMonthlyInvestmentAsync(request);
+
+        return Ok(new
+        {
+            message = "Monthly investment added successfully."
+        });
+    }
+
+    [HttpGet("prices")]
+    public async Task<IActionResult> GetExistingPrices(
+    [FromQuery] string month,
+    [FromQuery] string expense)
+    {
+        var prices = await _monthlyInvestmentService
+            .GetExistingPricesAsync(month, expense);
+
+        return Ok(prices);
     }
 }

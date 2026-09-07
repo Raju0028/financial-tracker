@@ -125,6 +125,7 @@
 .investment-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
   .investment-table th {
@@ -143,11 +144,6 @@
     border-bottom: 1px solid #e5e7eb;
   }
 
-    .investment-table th:last-child,
-    .investment-table td:last-child {
-      text-align: right;
-    }
-
   .investment-table tbody tr:last-child td {
     border-bottom: none;
   }
@@ -157,55 +153,147 @@
   }
 
 
-/* ================= MOBILE ================= */
+  /* ================= TABLE COLUMNS ================= */
 
-@media (max-width: 768px) {
+  /* Title */
 
-  .monthly-investment-page {
-    padding: 20px;
+  .investment-table th:first-child,
+  .investment-table td:first-child {
+    width: 50%;
+    text-align: left;
   }
 
-  .page-header h1 {
-    font-size: 28px;
-  }
 
-  .investment-summary-card {
-    grid-template-columns: 1fr;
-  }
+/* Amount */
 
-  .investment-banks {
-    padding: 20px;
-  }
-
-  .summary-bank {
-    max-width: none;
-  }
-
-  .summary-total {
-    border-left: none;
-    border-top: 1px solid #e5e7eb;
-    padding: 20px;
-  }
-
-  .investment-table-container {
-    width: 100%;
-    overflow-x: auto;
-  }
-
-  .investment-table {
-    min-width: 450px;
-  }
+.amount-cell {
+  width: 35%;
+  text-align: center;
+  white-space: nowrap;
 }
 
+
+/* Add */
+
+.add-header {
+  width: 15%;
+  text-align: center !important;
+}
+
+.add-cell {
+  width: 15%;
+  text-align: center;
+}
+
+
+/* ================= ADD BUTTON ================= */
+
+.add-expense-button {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+  .add-expense-button:hover {
+    background: #1d4ed8;
+    transform: scale(1.08);
+  }
+
+  .add-expense-button:active {
+    transform: scale(0.95);
+  }
+
+
+/* ================= PRICE INPUT ================= */
+
+.price-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+  .price-row input {
+    flex: 1;
+    min-width: 0;
+  }
+
+
+/* ================= REMOVE PRICE ================= */
+
+.remove-price-button {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 6px;
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+  .remove-price-button:hover {
+    background: #e5e7eb;
+  }
+
+
+/* ================= ADD PRICE ================= */
+
+.add-price-button {
+  margin-top: 4px;
+  border: 1px dashed #9ca3af;
+  background: transparent;
+  color: #374151;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+  .add-price-button:hover {
+    background: #f9fafb;
+  }
+
+
+/* ================================================= */
+/* ================= MOBILE ======================== */
+/* ================================================= */
+
 @media (max-width: 768px) {
+
+  /* Page */
 
   .monthly-investment-page {
     padding: 20px;
   }
 
+
+  /* Header */
+
   .page-header h1 {
     font-size: 28px;
   }
+
+
+  /* Summary */
 
   .investment-summary-card {
     grid-template-columns: 1fr;
@@ -225,7 +313,8 @@
     padding: 20px;
   }
 
-  /* ================= MOBILE TABLE ================= */
+
+  /* Table */
 
   .investment-table-container {
     width: 100%;
@@ -240,20 +329,44 @@
 
     .investment-table th,
     .investment-table td {
-      padding: 12px 14px;
+      padding: 12px 8px;
       font-size: 14px;
     }
 
+
+      /* Mobile column widths */
+
       .investment-table th:first-child,
       .investment-table td:first-child {
-        width: 60%;
+        width: 50%;
         text-align: left;
       }
 
-      .investment-table th:last-child,
-      .investment-table td:last-child {
-        width: 40%;
-        text-align: right;
-        white-space: nowrap;
-      }
+  .amount-cell {
+    width: 35%;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .add-header,
+  .add-cell {
+    width: 15%;
+    text-align: center !important;
+  }
+
+
+  /* Add button */
+
+  .add-expense-button {
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+  }
+
+
+  /* Price fields */
+
+  .price-row {
+    gap: 8px;
+  }
 }
