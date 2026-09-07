@@ -8,31 +8,14 @@ namespace FinancialTracker.Services;
 
 public class MonthlyInvestmentService
 {
-    private const string SpreadsheetId =
-        "1aqI-obbI5llj3atRY_TdZZIr8VLisKFEBpMSeeX_HYY";
+    private readonly string _spreadsheetId;
 
     private readonly SheetsService _sheetsService;
 
-    public MonthlyInvestmentService(IConfiguration configuration)
+    public MonthlyInvestmentService(IConfiguration configuration, GoogleSheetsClientService googleSheetsClient)
     {
-        var credentialsBase64 =
-            configuration["GoogleSheets:CredentialsBase64"]
-            ?? throw new InvalidOperationException(
-                "Google Sheets credentials are not configured.");
-
-        var credentialsJson = Encoding.UTF8.GetString(
-            Convert.FromBase64String(credentialsBase64));
-
-        GoogleCredential credential =
-            GoogleCredential.FromJson(credentialsJson)
-            .CreateScoped(SheetsService.Scope.Spreadsheets);
-
-        _sheetsService = new SheetsService(
-            new BaseClientService.Initializer
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = "Financial Tracker"
-            });
+        _sheetsService = googleSheetsClient.SheetsService;
+        _spreadsheetId = googleSheetsClient.SpreadsheetId;
     }
 
     public async Task<MonthlyInvestment> GetMonthlyInvestmentAsync()
@@ -40,7 +23,7 @@ public class MonthlyInvestmentService
         var range = "MonthlyPayment!A4:AL4";
 
         var request = _sheetsService.Spreadsheets.Values.Get(
-            SpreadsheetId,
+            _spreadsheetId,
             range);
 
         var response = await request.ExecuteAsync();

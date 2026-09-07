@@ -8,31 +8,14 @@ namespace FinancialTracker.Services;
 
 public class LoanService
 {
-    private const string SpreadsheetId =
-        "1aqI-obbI5llj3atRY_TdZZIr8VLisKFEBpMSeeX_HYY";
+    private readonly string _spreadsheetId;
 
     private readonly SheetsService _sheetsService;
 
-    public LoanService(IConfiguration configuration)
+    public LoanService(IConfiguration configuration, GoogleSheetsClientService googleSheetsClient)
     {
-        var credentialsBase64 =
-            configuration["GoogleSheets:CredentialsBase64"]
-            ?? throw new InvalidOperationException(
-                "Google Sheets credentials are not configured.");
-
-        var credentialsJson = Encoding.UTF8.GetString(
-            Convert.FromBase64String(credentialsBase64));
-
-        GoogleCredential credential =
-            GoogleCredential.FromJson(credentialsJson)
-            .CreateScoped(SheetsService.Scope.Spreadsheets);
-
-        _sheetsService = new SheetsService(
-            new BaseClientService.Initializer
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = "Financial Tracker"
-            });
+        _sheetsService = googleSheetsClient.SheetsService;
+        _spreadsheetId = googleSheetsClient.SpreadsheetId;
     }
 
     public async Task<List<Loan>> GetLoansAsync()
@@ -40,7 +23,7 @@ public class LoanService
         var range = "Loan!A:F";
 
         var request = _sheetsService.Spreadsheets.Values.Get(
-            SpreadsheetId,
+            _spreadsheetId,
             range);
 
         var response = await request.ExecuteAsync();
@@ -104,7 +87,7 @@ public class LoanService
         var range = "Loan!H:J";
 
         var request = _sheetsService.Spreadsheets.Values.Get(
-            SpreadsheetId,
+            _spreadsheetId,
             range);
 
         var response = await request.ExecuteAsync();
@@ -218,7 +201,7 @@ public class LoanService
 
         var request = _sheetsService.Spreadsheets.Values.Append(
             valueRange,
-            SpreadsheetId,
+            _spreadsheetId,
             "Loan!A:F");
 
         request.ValueInputOption =
@@ -251,7 +234,7 @@ public class LoanService
 
         var request = _sheetsService.Spreadsheets.Values.Append(
             valueRange,
-            SpreadsheetId,
+            _spreadsheetId,
             "Loan!H:J");
 
         request.ValueInputOption =

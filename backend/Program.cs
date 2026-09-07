@@ -12,6 +12,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Add services to the container
 builder.Services.AddControllers();
 
+builder.Services.AddSingleton<GoogleSheetsClientService>();
 builder.Services.AddSingleton<GoogleSheetsService>();
 builder.Services.AddSingleton<MonthlyInvestmentService>();
 builder.Services.AddSingleton<LoanService>();
