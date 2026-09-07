@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { OwnedList as OwnedListModel } from '../../../models/owned-list';
 import { DecimalPipe, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { GoogleSheetsService } from '../../../services/GoogleSheets.service';
+import { OwnedListService } from '../../../services/OwnedList.service';
 
 @Component({
   selector: 'app-owned-list',
@@ -19,8 +19,7 @@ import { GoogleSheetsService } from '../../../services/GoogleSheets.service';
 })
 export class OwnedList {
 
-  private readonly googleSheetsService =
-    inject(GoogleSheetsService);
+  private readonly ownedListService = inject(OwnedListService);
 
   // Modal
   showAddModal = signal(false);
@@ -55,7 +54,7 @@ export class OwnedList {
   // =====================================================
 
   private loadOwnedLists(): void {
-    this.googleSheetsService
+    this.ownedListService
       .getOwnedList()
       .subscribe({
         next: (data) => {
@@ -117,7 +116,7 @@ export class OwnedList {
       if (!rowNumber) {
         return;
       }
-      this.googleSheetsService.updateOwnedList(rowNumber,this.newOwnedList)
+      this.ownedListService.updateOwnedList(rowNumber,this.newOwnedList)
         .subscribe({
           next: (response) => {
             this.closeAddModal();
@@ -130,7 +129,7 @@ export class OwnedList {
       return;
     }
 
-    this.googleSheetsService.addOwnedList(this.newOwnedList)
+    this.ownedListService.addOwnedList(this.newOwnedList)
       .subscribe({
         next: (response) => {
           this.closeAddModal();
@@ -155,7 +154,7 @@ export class OwnedList {
     if (!confirmed) {
       return;
     }
-    this.googleSheetsService .deleteOwnedList(rowNumber)
+    this.ownedListService .deleteOwnedList(rowNumber)
       .subscribe({
         next: (response) => {
           this.loadOwnedLists();

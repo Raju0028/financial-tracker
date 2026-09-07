@@ -13,7 +13,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddControllers();
 
 builder.Services.AddSingleton<GoogleSheetsClientService>();
-builder.Services.AddSingleton<GoogleSheetsService>();
+builder.Services.AddSingleton<TransactionService>();
+builder.Services.AddSingleton<OwnedListService>();
 builder.Services.AddSingleton<MonthlyInvestmentService>();
 builder.Services.AddSingleton<LoanService>();
 

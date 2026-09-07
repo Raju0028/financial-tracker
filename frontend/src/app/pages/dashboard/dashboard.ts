@@ -1,9 +1,10 @@
 import { Component, OnInit, inject, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../services/api.service';
+import { TransactionService } from '../../../services/Transaction.service';
+import { OwnedListService } from '../../../services/OwnedList.service';
 import { Transaction } from '../../../models/transaction';
 import { RouterLink } from '@angular/router';
-import { GoogleSheetsService } from '../../../services/GoogleSheets.service';
 import { OwnedList } from '../../../models/owned-list';
 import { Router } from '@angular/router';
 import { LoanService } from '../../../services/Loan.service';
@@ -24,10 +25,11 @@ import { MonthlyInvestment } from '../../../models/monthly-investment';
 
 export class Dashboard implements OnInit {
   private readonly apiService = inject(ApiService);
-  private readonly googleSheetsService = inject(GoogleSheetsService);
   private readonly router = inject(Router);
   private readonly loanService = inject(LoanService);
   private readonly monthlyInvestmentService = inject(MonthlyInvestmentService);
+  private readonly transactionService = inject(TransactionService);
+  private readonly ownedListService = inject(OwnedListService);
 
   currentDate = signal(
     new Date().toISOString().split('T')[0]
@@ -53,19 +55,19 @@ export class Dashboard implements OnInit {
   }
 
   private loadTransactions(): void {
-    this.googleSheetsService.getTransactions().subscribe({
+    this.transactionService.getRecentTransactions().subscribe({
       next: (transactions) => {
         this.transactions = transactions;
-        console.log('Transactions loaded:', transactions);
+        console.log('Recent transactions loaded:', transactions);
       },
       error: (error) => {
-        console.error('Error loading transactions:', error);
+        console.error('Error loading recent transactions:', error);
       }
     });
   }
 
   private loadOwnedLists(): void {
-    this.googleSheetsService.getOwnedList().subscribe({
+    this.ownedListService.getOwnedList().subscribe({
       next: (data) => {
         console.log('API data:', data);
 

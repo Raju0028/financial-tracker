@@ -6,14 +6,16 @@ namespace FinancialTracker.Services;
 public class MonthlyInvestmentService
 {
     private readonly string _spreadsheetId;
-
+    private readonly TransactionService _transactionService;
     private readonly SheetsService _sheetsService;
     private readonly MonthlyPaymentSettings _settings;
 
-    public MonthlyInvestmentService(IConfiguration configuration, GoogleSheetsClientService googleSheetsClient)
+    public MonthlyInvestmentService(IConfiguration configuration, GoogleSheetsClientService googleSheetsClient, TransactionService transactionService)
     {
         _sheetsService = googleSheetsClient.SheetsService;
         _spreadsheetId = googleSheetsClient.SpreadsheetId;
+        _transactionService = transactionService;
+
         _settings = configuration
        .GetSection("MonthlyPayment")
        .Get<MonthlyPaymentSettings>()
@@ -159,30 +161,11 @@ public class MonthlyInvestmentService
             .ToString();
 
         var newValues = request.Prices
-            .Select(price => price.ToString(
-                System.Globalization.CultureInfo.InvariantCulture))
-            .ToList();
+      .Select(price => price.ToString(
+          System.Globalization.CultureInfo.InvariantCulture))
+      .ToList();
 
-        var formulaParts = new List<string>();
-
-        if (!string.IsNullOrWhiteSpace(existingValue))
-        {
-            var existingFormula = existingValue.Trim();
-
-            if (existingFormula.StartsWith("="))
-            {
-                existingFormula = existingFormula[1..];
-            }
-
-            if (!string.IsNullOrWhiteSpace(existingFormula))
-            {
-                formulaParts.Add(existingFormula);
-            }
-        }
-
-        formulaParts.AddRange(newValues);
-
-        var formula = "=" + string.Join("+", formulaParts);
+        var formula = "=" + string.Join("+", newValues);
 
         var valueRange = new Google.Apis.Sheets.v4.Data.ValueRange
         {
@@ -202,7 +185,25 @@ public class MonthlyInvestmentService
             SpreadsheetsResource.ValuesResource.UpdateRequest
                 .ValueInputOptionEnum.USERENTERED;
 
+        // First update MonthlyPayment
         await updateRequest.ExecuteAsync();
+
+        // Calculate only the amount added in this operation
+        var transactionAmount = request.Prices.Sum();
+
+        // Only after successful insertion,
+        // add it to RecentTransactions
+        var transaction = new Transaction
+        {
+            Date = DateTime.Now.ToString("MM/dd/yyyy"),
+            Description = request.Expense,
+            Category = "Monthly Investment",
+            Type = "Expense",
+            Amount = transactionAmount
+        };
+
+        await _transactionService.AddRecentTransactionAsync(
+            transaction);
     }
 
     public async Task<List<decimal>> GetExistingPricesAsync(

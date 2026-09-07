@@ -9,13 +9,14 @@ namespace FinancialTracker.Services;
 public class LoanService
 {
     private readonly string _spreadsheetId;
-
+    private readonly TransactionService _transactionService;
     private readonly SheetsService _sheetsService;
 
-    public LoanService(IConfiguration configuration, GoogleSheetsClientService googleSheetsClient)
+    public LoanService(IConfiguration configuration, GoogleSheetsClientService googleSheetsClient, TransactionService transactionService)
     {
         _sheetsService = googleSheetsClient.SheetsService;
         _spreadsheetId = googleSheetsClient.SpreadsheetId;
+        _transactionService = transactionService;
     }
 
     public async Task<List<Loan>> GetLoansAsync()
@@ -211,8 +212,22 @@ public class LoanService
         request.InsertDataOption =
             SpreadsheetsResource.ValuesResource.AppendRequest
                 .InsertDataOptionEnum.INSERTROWS;
-
+        // Add to Loan sheet first
         await request.ExecuteAsync();
+
+        // Only after successful Loan insertion,
+        // add it to RecentTransactions
+        var transaction = new Transaction
+        {
+            Date = loan.Date,
+            Description = $"Loan from {loan.From}",
+            Category = "Loan",
+            Type = "Income",
+            Amount = loan.LoanAmount
+        };
+
+        await _transactionService.AddRecentTransactionAsync(
+            transaction);
     }
 
     public async Task AddLoanRepaymentAsync(LoanRepayment repayment)
@@ -245,6 +260,21 @@ public class LoanService
             SpreadsheetsResource.ValuesResource.AppendRequest
                 .InsertDataOptionEnum.INSERTROWS;
 
+        // Add repayment to Loan sheet first
         await request.ExecuteAsync();
+
+        // Only after successful repayment insertion,
+        // add it to RecentTransactions
+        var transaction = new Transaction
+        {
+            Date = repayment.Date,
+            Description = $"Loan repayment to {repayment.To}",
+            Category = "Loan Repayment",
+            Type = "Expense",
+            Amount = repayment.RepaymentAmount
+        };
+
+        await _transactionService.AddRecentTransactionAsync(
+            transaction);
     }
 }
