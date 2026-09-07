@@ -414,15 +414,14 @@
             </label>
 
             <select id="expense"
-                    [value]="selectedExpense()"
-                    (change)="onExpenseChange($any($event.target).value)">
+                    name="expense"
+                    [ngModel]="selectedExpense()"
+                    (ngModelChange)="onExpenseChange($event)">
 
               @for (expense of expenses; track expense) {
-
-              <option [value]="expense">
+              <option [ngValue]="expense">
                 {{ expense }}
               </option>
-
               }
 
             </select>

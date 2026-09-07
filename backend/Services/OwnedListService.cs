@@ -7,21 +7,22 @@ using System.Text;
 
 namespace FinancialTracker.Services;
 
-public class GoogleSheetsService
+public class OwnedListService
 {
     private readonly string _spreadsheetId;
-
+    private readonly TransactionService _transactionService;
     private readonly SheetsService _sheetsService;
 
-    public GoogleSheetsService(IConfiguration configuration, GoogleSheetsClientService googleSheetsClient)
+    public OwnedListService(IConfiguration configuration, GoogleSheetsClientService googleSheetsClient, TransactionService transactionService)
     {
         _sheetsService = googleSheetsClient.SheetsService;
         _spreadsheetId = googleSheetsClient.SpreadsheetId;
+        _transactionService = transactionService;
     }
 
-    public async Task<List<Transaction>> GetTransactionsAsync()
+    public async Task<List<OwnerList>> GetOwnerListsAsync()
     {
-        var range = "Transactions!A:E";
+        var range = "OwnedList!A:F";
 
         var request = _sheetsService.Spreadsheets.Values.Get(
             _spreadsheetId,
@@ -31,57 +32,12 @@ public class GoogleSheetsService
 
         var rows = response.Values;
 
-        var transactions = new List<Transaction>();
+        var ownerLists = new List<OwnerList>();
 
         if (rows == null || rows.Count <= 1)
         {
-            return transactions;
+            return ownerLists;
         }
-
-        foreach (var row in rows.Skip(1))
-        {
-            if (row.Count < 5)
-            {
-                continue;
-            }
-
-            var transaction = new Transaction
-            {
-                Date = row[0]?.ToString() ?? string.Empty,
-                Description = row[1]?.ToString() ?? string.Empty,
-                Category = row[2]?.ToString() ?? string.Empty,
-                Type = row[3]?.ToString() ?? string.Empty,
-                Amount = decimal.TryParse(
-                    row[4]?.ToString(),
-                    out var amount)
-                    ? amount
-                    : 0
-            };
-
-            transactions.Add(transaction);
-        }
-
-        return transactions;
-    }
-
-public async Task<List<OwnerList>> GetOwnerListsAsync()
-{
-    var range = "OwnedList!A:F";
-
-    var request = _sheetsService.Spreadsheets.Values.Get(
-        _spreadsheetId,
-        range);
-
-    var response = await request.ExecuteAsync();
-
-    var rows = response.Values;
-
-    var ownerLists = new List<OwnerList>();
-
-    if (rows == null || rows.Count <= 1)
-    {
-        return ownerLists;
-    }
 
         foreach (var row in rows.Skip(1))
         {
@@ -135,8 +91,8 @@ public async Task<List<OwnerList>> GetOwnerListsAsync()
                 : DateTime.MinValue)
         .ToList();
 
-    return ownerLists;
-}
+        return ownerLists;
+    }
 
     public async Task AddOwnerListAsync(OwnerList ownerList)
     {
@@ -169,6 +125,20 @@ public async Task<List<OwnerList>> GetOwnerListsAsync()
             SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
 
         await request.ExecuteAsync();
+
+        // Only after successful insertion,
+        // add it to RecentTransactions
+        var transaction = new Transaction
+        {
+            Date = ownerList.Date,
+            Description = ownerList.Item,
+            Category = "Owned List",
+            Type = "Expense",
+            Amount = ownerList.Cost
+        };
+
+        await _transactionService.AddRecentTransactionAsync(
+            transaction);
     }
 
     public async Task UpdateOwnerListAsync(
@@ -203,7 +173,9 @@ public async Task<List<OwnerList>> GetOwnerListsAsync()
         request.ValueInputOption =
             SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
 
+        // First add to OwnedList
         await request.ExecuteAsync();
+
     }
 
     public async Task DeleteOwnerListAsync(int rowNumber)

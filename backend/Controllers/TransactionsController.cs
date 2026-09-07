@@ -8,80 +8,36 @@ namespace FinancialTracker.Controllers;
 [Route("api/[controller]")]
 public class TransactionsController : ControllerBase
 {
-    private readonly GoogleSheetsService _googleSheetsService;
+    private readonly TransactionService _transactionService;
 
     public TransactionsController(
-        GoogleSheetsService googleSheetsService)
+        TransactionService transactionService)
     {
-        _googleSheetsService = googleSheetsService;
+        _transactionService = transactionService;
     }
 
-
-    // GET transactions
-    [HttpGet]
-    public async Task<IActionResult> GetTransactions()
+    // GET recent transactions
+    [HttpGet("recent")]
+    public async Task<IActionResult> GetRecentTransactions()
     {
         var transactions =
-            await _googleSheetsService.GetTransactionsAsync();
+            await _transactionService.GetRecentTransactionsAsync();
 
         return Ok(transactions);
     }
 
-
-    // GET owned list
-    [HttpGet("ownerlists")]
-    public async Task<IActionResult> GetOwnerLists()
+    // POST recent transaction
+    [HttpPost("recent")]
+    public async Task<IActionResult> AddRecentTransaction(
+        [FromBody] Transaction transaction)
     {
-        var ownerLists =
-            await _googleSheetsService.GetOwnerListsAsync();
-
-        return Ok(ownerLists);
-    }
-
-
-    // POST owned list
-    [HttpPost("ownerlists")]
-    public async Task<IActionResult> AddOwnerList(
-        [FromBody] OwnerList ownerList)
-    {
-        await _googleSheetsService.AddOwnerListAsync(
-            ownerList);
+        await _transactionService.AddRecentTransactionAsync(
+            transaction);
 
         return Ok(new
         {
-            message = "Owned list item added successfully."
+            message = "Recent transaction added successfully."
         });
     }
 
-
-    // PUT owned list
-    [HttpPut("ownerlists/{rowNumber}")]
-    public async Task<IActionResult> UpdateOwnerList(
-        int rowNumber,
-        [FromBody] OwnerList ownerList)
-    {
-        await _googleSheetsService.UpdateOwnerListAsync(
-            rowNumber,
-            ownerList);
-
-        return Ok(new
-        {
-            message = "Owned list item updated successfully."
-        });
-    }
-
-
-    // DELETE owned list
-    [HttpDelete("ownerlists/{rowNumber}")]
-    public async Task<IActionResult> DeleteOwnerList(
-        int rowNumber)
-    {
-        await _googleSheetsService.DeleteOwnerListAsync(
-            rowNumber);
-
-        return Ok(new
-        {
-            message = "Owned list item deleted successfully."
-        });
-    }
 }

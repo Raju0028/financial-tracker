@@ -5,11 +5,12 @@ import { MonthlyInvestment } from '../../../models/monthly-investment';
 import { RouterLink } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AddMonthlyInvestment } from '../../../models/add-monthly-investment';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'monthly-investment',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './monthly-investment.html',
   styleUrl: './monthly-investment.css'
 })
@@ -85,9 +86,12 @@ export class MonthlyInvestmentPage implements OnInit,OnDestroy {
   }
 
   openAddModal(expense: string): void {
+    console.log('Expense clicked:', expense);
+
     this.selectedMonth.set(this.getCurrentMonth());
     this.selectedExpense.set(expense);
 
+    console.log('Selected expense:', this.selectedExpense());
     this.isAddModalOpen.set(true);
 
     this.loadExistingPrices();
