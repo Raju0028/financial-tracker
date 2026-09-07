@@ -52,3 +52,31 @@
   cursor: pointer;
   font-size: 15px;
 }
+
+/* Mobile header */
+@media (max-width: 768px) {
+
+  .navbar {
+    height: 64px;
+    padding: 0 16px;
+    justify-content: flex-start;
+  }
+
+  .nav-links,
+  .profile {
+    display: none;
+  }
+
+  .logo {
+    gap: 8px;
+  }
+
+  .logo-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .logo-text {
+    font-size: 16px;
+  }
+}

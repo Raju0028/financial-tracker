@@ -9,31 +9,14 @@ namespace FinancialTracker.Services;
 
 public class GoogleSheetsService
 {
-	private const string SpreadsheetId =
-	   "1aqI-obbI5llj3atRY_TdZZIr8VLisKFEBpMSeeX_HYY";
+    private readonly string _spreadsheetId;
 
-	private readonly SheetsService _sheetsService;
+    private readonly SheetsService _sheetsService;
 
-    public GoogleSheetsService(IConfiguration configuration)
+    public GoogleSheetsService(IConfiguration configuration, GoogleSheetsClientService googleSheetsClient)
     {
-        var credentialsBase64 =
-            configuration["GoogleSheets:CredentialsBase64"]
-            ?? throw new InvalidOperationException(
-                "Google Sheets credentials are not configured.");
-
-        var credentialsJson = Encoding.UTF8.GetString(
-            Convert.FromBase64String(credentialsBase64));
-
-        GoogleCredential credential =
-            GoogleCredential.FromJson(credentialsJson)
-            .CreateScoped(SheetsService.Scope.Spreadsheets);
-
-        _sheetsService = new SheetsService(
-            new BaseClientService.Initializer
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = "Financial Tracker"
-            });
+        _sheetsService = googleSheetsClient.SheetsService;
+        _spreadsheetId = googleSheetsClient.SpreadsheetId;
     }
 
     public async Task<List<Transaction>> GetTransactionsAsync()
@@ -41,7 +24,7 @@ public class GoogleSheetsService
         var range = "Transactions!A:E";
 
         var request = _sheetsService.Spreadsheets.Values.Get(
-            SpreadsheetId,
+            _spreadsheetId,
             range);
 
         var response = await request.ExecuteAsync();
@@ -86,7 +69,7 @@ public async Task<List<OwnerList>> GetOwnerListsAsync()
     var range = "OwnedList!A:F";
 
     var request = _sheetsService.Spreadsheets.Values.Get(
-        SpreadsheetId,
+        _spreadsheetId,
         range);
 
     var response = await request.ExecuteAsync();
@@ -179,7 +162,7 @@ public async Task<List<OwnerList>> GetOwnerListsAsync()
 
         var request = _sheetsService.Spreadsheets.Values.Append(
             valueRange,
-            SpreadsheetId,
+            _spreadsheetId,
             range);
 
         request.ValueInputOption =
@@ -214,7 +197,7 @@ public async Task<List<OwnerList>> GetOwnerListsAsync()
 
         var request = _sheetsService.Spreadsheets.Values.Update(
             valueRange,
-            SpreadsheetId,
+            _spreadsheetId,
             range);
 
         request.ValueInputOption =
@@ -248,7 +231,7 @@ public async Task<List<OwnerList>> GetOwnerListsAsync()
         var batchRequest =
             _sheetsService.Spreadsheets.BatchUpdate(
                 request,
-                SpreadsheetId);
+                _spreadsheetId);
 
         await batchRequest.ExecuteAsync();
     }
@@ -256,7 +239,7 @@ public async Task<List<OwnerList>> GetOwnerListsAsync()
     private async Task<int> GetOwnedListSheetIdAsync()
     {
         var spreadsheetRequest =
-            _sheetsService.Spreadsheets.Get(SpreadsheetId);
+            _sheetsService.Spreadsheets.Get(_spreadsheetId);
 
         var spreadsheet =
             await spreadsheetRequest.ExecuteAsync();
