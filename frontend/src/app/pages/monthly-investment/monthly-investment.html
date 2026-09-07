@@ -75,100 +75,269 @@
           <tr>
             <th>Title</th>
             <th>Amount</th>
+            <th></th>
           </tr>
         </thead>
 
 
         <tbody>
 
+          <!-- Gas Used -->
+
           <tr>
             <td>Gas Used</td>
+
+            <td class="expense-amount">
+              <span>
+                ₹{{ monthlyInvestment()?.gasUsed | number:'1.0-2' }}
+              </span>
+              </td>
             <td>
-              ₹{{ monthlyInvestment()?.gasUsed | number:'1.0-2' }}
+              <button type="button"
+                      class="add-expense-button"
+                      (click)="openAddModal('Gas Used')">
+                +
+              </button>
             </td>
           </tr>
+
+
+          <!-- Electricity -->
 
           <tr>
             <td>Electricity</td>
+
+            <td class="expense-amount">
+              <span>
+                ₹{{ monthlyInvestment()?.electricity | number:'1.0-2' }}
+              </span>
+              </td>
             <td>
-              ₹{{ monthlyInvestment()?.electricity | number:'1.0-2' }}
+              <button type="button"
+                      class="add-expense-button"
+                      (click)="openAddModal('Electricity')">
+                +
+              </button>
             </td>
           </tr>
+
+
+          <!-- Mobile -->
 
           <tr>
             <td>Mobile</td>
+
+            <td class="expense-amount">
+              <span>
+                ₹{{ monthlyInvestment()?.mobile | number:'1.0-2' }}
+              </span>
+              </td>
             <td>
-              ₹{{ monthlyInvestment()?.mobile | number:'1.0-2' }}
+              <button type="button"
+                      class="add-expense-button"
+                      (click)="openAddModal('Mobile')">
+                +
+              </button>
             </td>
           </tr>
+
+
+          <!-- Gift -->
 
           <tr>
             <td>Gift</td>
+
+            <td class="expense-amount">
+              <span>
+                ₹{{ monthlyInvestment()?.gift | number:'1.0-2' }}
+              </span>
+              </td>
             <td>
-              ₹{{ monthlyInvestment()?.gift | number:'1.0-2' }}
+              <button type="button"
+                      class="add-expense-button"
+                      (click)="openAddModal('Gift')">
+                +
+              </button>
             </td>
           </tr>
+
+
+          <!-- Car Service -->
 
           <tr>
             <td>Car Service</td>
+
+            <td class="expense-amount">
+              <span>
+                ₹{{ monthlyInvestment()?.carService | number:'1.0-2' }}
+              </span>
+              </td>
             <td>
-              ₹{{ monthlyInvestment()?.carService | number:'1.0-2' }}
+              <button type="button"
+                      class="add-expense-button"
+                      (click)="openAddModal('Car Service')">
+                +
+              </button>
             </td>
           </tr>
+
+
+          <!-- Car Insurance -->
 
           <tr>
             <td>Car Insurance</td>
+
+            <td class="expense-amount">
+              <span>
+                ₹{{ monthlyInvestment()?.carInsurance | number:'1.0-2' }}
+              </span>
+              </td>
             <td>
-              ₹{{ monthlyInvestment()?.carInsurance | number:'1.0-2' }}
+              <button type="button"
+                      class="add-expense-button"
+                      (click)="openAddModal('Car Insurance')">
+                +
+              </button>
             </td>
           </tr>
+
+
+          <!-- Bike -->
 
           <tr>
             <td>Bike</td>
+
+            <td class="expense-amount">
+              <span>
+                ₹{{ monthlyInvestment()?.bike | number:'1.0-2' }}
+              </span>
+              </td>
             <td>
-              ₹{{ monthlyInvestment()?.bike | number:'1.0-2' }}
+              <button type="button"
+                      class="add-expense-button"
+                      (click)="openAddModal('Bike')">
+                +
+              </button>
             </td>
           </tr>
+
+
+          <!-- CNG -->
 
           <tr>
             <td>CNG</td>
+
+            <td class="expense-amount">
+              <span>
+                ₹{{ monthlyInvestment()?.cng | number:'1.0-2' }}
+              </span>
+              </td>
             <td>
-              ₹{{ monthlyInvestment()?.cng | number:'1.0-2' }}
+              <button type="button"
+                      class="add-expense-button"
+                      (click)="openAddModal('CNG')">
+                +
+              </button>
             </td>
           </tr>
+
+
+          <!-- WIFI -->
 
           <tr>
             <td>WIFI</td>
+
+            <td class="expense-amount">
+              <span>
+                ₹{{ monthlyInvestment()?.wifi | number:'1.0-2' }}
+              </span>
+              </td>
             <td>
-              ₹{{ monthlyInvestment()?.wifi | number:'1.0-2' }}
+              <button type="button"
+                      class="add-expense-button"
+                      (click)="openAddModal('WIFI')">
+                +
+              </button>
             </td>
           </tr>
+
+
+          <!-- Tour -->
 
           <tr>
             <td>Tour</td>
+
+            <td class="expense-amount">
+              <span>
+                ₹{{ monthlyInvestment()?.tour | number:'1.0-2' }}
+              </span>
+              </td>
             <td>
-              ₹{{ monthlyInvestment()?.tour | number:'1.0-2' }}
+              <button type="button"
+                      class="add-expense-button"
+                      (click)="openAddModal('Tour')">
+                +
+              </button>
             </td>
           </tr>
+
+
+          <!-- Friends Tour -->
 
           <tr>
             <td>Friends Tour</td>
+
+            <td class="expense-amount">
+              <span>
+                ₹{{ monthlyInvestment()?.friendsTour | number:'1.0-2' }}
+              </span>
+              </td>
             <td>
-              ₹{{ monthlyInvestment()?.friendsTour | number:'1.0-2' }}
+              <button type="button"
+                      class="add-expense-button"
+                      (click)="openAddModal('Friends Tour')">
+                +
+              </button>
             </td>
           </tr>
+
+
+          <!-- House Product -->
 
           <tr>
             <td>House Product</td>
+
+            <td class="expense-amount">
+              <span>
+                ₹{{ monthlyInvestment()?.houseProduct | number:'1.0-2' }}
+              </span>
+              </td>
             <td>
-              ₹{{ monthlyInvestment()?.houseProduct | number:'1.0-2' }}
+              <button type="button"
+                      class="add-expense-button"
+                      (click)="openAddModal('House Product')">
+                +
+              </button>
             </td>
           </tr>
 
+
+          <!-- Emergency AMT -->
+
           <tr>
             <td>Emergency AMT</td>
+
+            <td class="expense-amount">
+              <span>
+                ₹{{ monthlyInvestment()?.emergencyAmount | number:'1.0-2' }}
+              </span>
+              </td>
             <td>
-              ₹{{ monthlyInvestment()?.emergencyAmount | number:'1.0-2' }}
+              <button type="button"
+                      class="add-expense-button"
+                      (click)="openAddModal('Emergency AMT')">
+                +
+              </button>
             </td>
           </tr>
 
@@ -179,5 +348,169 @@
     </div>
 
   </div>
+
+
+  <!-- ================= ADD MODAL ================= -->
+  @if (isAddModalOpen()) {
+
+  <div class="modal-overlay"
+       (click)="closeAddModal()">
+
+    <div class="modal-card"
+         (click)="$event.stopPropagation()">
+
+      <!-- Modal Header -->
+
+      <div class="modal-header">
+
+        <h2>Add Monthly Investment</h2>
+
+        <button type="button"
+                class="close-button"
+                (click)="closeAddModal()">
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- Modal Form -->
+
+      <form (submit)="$event.preventDefault(); saveMonthlyInvestment()">
+
+        <div class="form-grid">
+
+          <!-- Month -->
+
+          <div class="form-group">
+
+            <label for="month">
+              Month
+            </label>
+
+            <select id="month"
+                    (change)="onMonthChange($any($event.target).value)">
+
+              @for (month of months; track month) {
+
+              <option [value]="month"
+                      [selected]="month === selectedMonth()">
+                {{ month }}
+              </option>
+
+              }
+
+            </select>
+
+          </div>
+
+
+          <!-- Expense -->
+
+          <div class="form-group">
+
+            <label for="expense">
+              Expense
+            </label>
+
+            <select id="expense"
+                    [value]="selectedExpense()"
+                    (change)="onExpenseChange($any($event.target).value)">
+
+              @for (expense of expenses; track expense) {
+
+              <option [value]="expense">
+                {{ expense }}
+              </option>
+
+              }
+
+            </select>
+
+          </div>
+
+
+          <!-- Prices -->
+
+          <div class="form-group full-width">
+
+            <label>
+              Price
+            </label>
+
+
+            @for (
+            price of prices();
+            track $index;
+            let i = $index
+            ) {
+
+            <div class="price-row">
+
+              <input type="number"
+                     min="0"
+                     step="0.01"
+                     [value]="price"
+                     (input)="
+                      updatePrice(
+                        i,
+                        $any($event.target).value
+                      )
+                    "
+                     placeholder="Enter price" />
+
+
+              @if (prices().length > 1) {
+
+              <button type="button"
+                      class="remove-price-button"
+                      (click)="removePriceField(i)">
+                −
+              </button>
+
+              }
+
+            </div>
+
+            }
+
+
+            <!-- Add another price -->
+
+            <button type="button"
+                    class="add-price-button"
+                    (click)="addPriceField()">
+              + Price
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- Modal Actions -->
+
+        <div class="modal-actions">
+
+          <button type="button"
+                  class="cancel-button"
+                  (click)="closeAddModal()">
+            Cancel
+          </button>
+
+          <button type="submit"
+                  class="save-button">
+            Add
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+  }
 
 </div>

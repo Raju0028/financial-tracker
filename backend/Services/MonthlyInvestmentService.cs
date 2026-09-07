@@ -1,8 +1,5 @@
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using FinancialTracker.Models;
-using System.Text;
 
 namespace FinancialTracker.Services;
 
@@ -11,11 +8,18 @@ public class MonthlyInvestmentService
     private readonly string _spreadsheetId;
 
     private readonly SheetsService _sheetsService;
+    private readonly MonthlyPaymentSettings _settings;
 
     public MonthlyInvestmentService(IConfiguration configuration, GoogleSheetsClientService googleSheetsClient)
     {
         _sheetsService = googleSheetsClient.SheetsService;
         _spreadsheetId = googleSheetsClient.SpreadsheetId;
+        _settings = configuration
+       .GetSection("MonthlyPayment")
+       .Get<MonthlyPaymentSettings>()
+       ?? throw new InvalidOperationException(
+           "MonthlyPayment settings are not configured.");
+
     }
 
     public async Task<MonthlyInvestment> GetMonthlyInvestmentAsync()
@@ -104,5 +108,173 @@ public class MonthlyInvestmentService
             out var value)
             ? value
             : 0;
+    }
+
+    public async Task AddMonthlyInvestmentAsync(
+    AddMonthlyInvestment request)
+    {
+        if (string.IsNullOrWhiteSpace(request.Month))
+        {
+            throw new ArgumentException("Month is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(request.Expense))
+        {
+            throw new ArgumentException("Expense is required.");
+        }
+
+        if (request.Prices == null || request.Prices.Count == 0)
+        {
+            throw new ArgumentException("At least one price is required.");
+        }
+
+        if (!_settings.Months.TryGetValue(
+            request.Month,
+            out var row))
+        {
+            throw new ArgumentException(
+                $"Invalid month: {request.Month}");
+        }
+
+        if (!_settings.Expenses.TryGetValue(
+            request.Expense,
+            out var column))
+        {
+            throw new ArgumentException(
+                $"Invalid expense: {request.Expense}");
+        }
+
+        var cell = $"{column}{row}";
+        var range = $"'{_settings.SheetName}'!{cell}";
+
+        var getRequest = _sheetsService.Spreadsheets.Values.Get(
+            _spreadsheetId,
+            range);
+
+        var response = await getRequest.ExecuteAsync();
+
+        var existingValue = response.Values?
+            .FirstOrDefault()?
+            .FirstOrDefault()?
+            .ToString();
+
+        var newValues = request.Prices
+            .Select(price => price.ToString(
+                System.Globalization.CultureInfo.InvariantCulture))
+            .ToList();
+
+        var formulaParts = new List<string>();
+
+        if (!string.IsNullOrWhiteSpace(existingValue))
+        {
+            var existingFormula = existingValue.Trim();
+
+            if (existingFormula.StartsWith("="))
+            {
+                existingFormula = existingFormula[1..];
+            }
+
+            if (!string.IsNullOrWhiteSpace(existingFormula))
+            {
+                formulaParts.Add(existingFormula);
+            }
+        }
+
+        formulaParts.AddRange(newValues);
+
+        var formula = "=" + string.Join("+", formulaParts);
+
+        var valueRange = new Google.Apis.Sheets.v4.Data.ValueRange
+        {
+            Values = new List<IList<object>>
+        {
+            new List<object> { formula }
+        }
+        };
+
+        var updateRequest =
+            _sheetsService.Spreadsheets.Values.Update(
+                valueRange,
+                _spreadsheetId,
+                range);
+
+        updateRequest.ValueInputOption =
+            SpreadsheetsResource.ValuesResource.UpdateRequest
+                .ValueInputOptionEnum.USERENTERED;
+
+        await updateRequest.ExecuteAsync();
+    }
+
+    public async Task<List<decimal>> GetExistingPricesAsync(
+    string month,
+    string expense)
+    {
+        if (string.IsNullOrWhiteSpace(month))
+        {
+            throw new ArgumentException("Month is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(expense))
+        {
+            throw new ArgumentException("Expense is required.");
+        }
+
+        if (!_settings.Months.TryGetValue(
+            month,
+            out var row))
+        {
+            throw new ArgumentException(
+                $"Invalid month: {month}");
+        }
+
+        if (!_settings.Expenses.TryGetValue(
+            expense,
+            out var column))
+        {
+            throw new ArgumentException(
+                $"Invalid expense: {expense}");
+        }
+
+        var cell = $"{column}{row}";
+        var range = $"'{_settings.SheetName}'!{cell}";
+
+        var getRequest = _sheetsService.Spreadsheets.Values.Get(
+            _spreadsheetId,
+            range);
+
+        var response = await getRequest.ExecuteAsync();
+
+        var existingValue = response.Values?
+            .FirstOrDefault()?
+            .FirstOrDefault()?
+            .ToString();
+
+        if (string.IsNullOrWhiteSpace(existingValue))
+        {
+            return new List<decimal>();
+        }
+
+        var formula = existingValue.Trim();
+
+        if (formula.StartsWith("="))
+        {
+            formula = formula[1..];
+        }
+
+        var prices = formula
+            .Split('+', StringSplitOptions.RemoveEmptyEntries)
+            .Select(value =>
+                decimal.TryParse(
+                    value.Trim(),
+                    System.Globalization.NumberStyles.Number,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out var price)
+                    ? (decimal?)price
+                    : null)
+            .Where(value => value.HasValue)
+            .Select(value => value!.Value)
+            .ToList();
+
+        return prices;
     }
 }
