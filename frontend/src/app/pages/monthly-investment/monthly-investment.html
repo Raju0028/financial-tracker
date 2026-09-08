@@ -1,3 +1,4 @@
+<app-back-button></app-back-button>
 <div class="monthly-investment-page">
 
   <!-- ================= HEADER ================= -->
@@ -59,295 +60,357 @@
 
 
   <!-- ================= EXPENSE TABLE ================= -->
+  <div class="tables-row">
 
-  <div class="investment-section">
+    <!-- Monthly Expenses -->
+    <div class="investment-section">
 
-    <div class="section-header">
-      <h2>Monthly Expenses</h2>
+      <div class="section-header">
+        <h2>Monthly Expenses</h2>
+      </div>
+
+
+      <div class="investment-table-container">
+
+        <table class="investment-table">
+
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Amount</th>
+              <th></th>
+            </tr>
+          </thead>
+
+
+          <tbody>
+
+            <!-- Gas Used -->
+
+            <tr>
+              <td>Gas Used</td>
+
+              <td class="expense-amount">
+                <span>
+                  ₹{{ monthlyInvestment()?.gasUsed | number:'1.0-2' }}
+                </span>
+              </td>
+              <td>
+                <button type="button"
+                        class="add-expense-button"
+                        (click)="openAddModal('Gas Used')">
+                  +
+                </button>
+              </td>
+            </tr>
+
+
+            <!-- Electricity -->
+
+            <tr>
+              <td>Electricity</td>
+
+              <td class="expense-amount">
+                <span>
+                  ₹{{ monthlyInvestment()?.electricity | number:'1.0-2' }}
+                </span>
+              </td>
+              <td>
+                <button type="button"
+                        class="add-expense-button"
+                        (click)="openAddModal('Electricity')">
+                  +
+                </button>
+              </td>
+            </tr>
+
+
+            <!-- Mobile -->
+
+            <tr>
+              <td>Mobile</td>
+
+              <td class="expense-amount">
+                <span>
+                  ₹{{ monthlyInvestment()?.mobile | number:'1.0-2' }}
+                </span>
+              </td>
+              <td>
+                <button type="button"
+                        class="add-expense-button"
+                        (click)="openAddModal('Mobile')">
+                  +
+                </button>
+              </td>
+            </tr>
+
+
+            <!-- Gift -->
+
+            <tr>
+              <td>Gift</td>
+
+              <td class="expense-amount">
+                <span>
+                  ₹{{ monthlyInvestment()?.gift | number:'1.0-2' }}
+                </span>
+              </td>
+              <td>
+                <button type="button"
+                        class="add-expense-button"
+                        (click)="openAddModal('Gift')">
+                  +
+                </button>
+              </td>
+            </tr>
+
+
+            <!-- Car Service -->
+
+            <tr>
+              <td>Car Service</td>
+
+              <td class="expense-amount">
+                <span>
+                  ₹{{ monthlyInvestment()?.carService | number:'1.0-2' }}
+                </span>
+              </td>
+              <td>
+                <button type="button"
+                        class="add-expense-button"
+                        (click)="openAddModal('Car Service')">
+                  +
+                </button>
+              </td>
+            </tr>
+
+
+            <!-- Car Insurance -->
+
+            <tr>
+              <td>Car Insurance</td>
+
+              <td class="expense-amount">
+                <span>
+                  ₹{{ monthlyInvestment()?.carInsurance | number:'1.0-2' }}
+                </span>
+              </td>
+              <td>
+                <button type="button"
+                        class="add-expense-button"
+                        (click)="openAddModal('Car Insurance')">
+                  +
+                </button>
+              </td>
+            </tr>
+
+
+            <!-- Bike -->
+
+            <tr>
+              <td>Bike</td>
+
+              <td class="expense-amount">
+                <span>
+                  ₹{{ monthlyInvestment()?.bike | number:'1.0-2' }}
+                </span>
+              </td>
+              <td>
+                <button type="button"
+                        class="add-expense-button"
+                        (click)="openAddModal('Bike')">
+                  +
+                </button>
+              </td>
+            </tr>
+
+
+            <!-- CNG -->
+
+            <tr>
+              <td>CNG</td>
+
+              <td class="expense-amount">
+                <span>
+                  ₹{{ monthlyInvestment()?.cng | number:'1.0-2' }}
+                </span>
+              </td>
+              <td>
+                <button type="button"
+                        class="add-expense-button"
+                        (click)="openAddModal('CNG')">
+                  +
+                </button>
+              </td>
+            </tr>
+
+
+            <!-- WIFI -->
+
+            <tr>
+              <td>WIFI</td>
+
+              <td class="expense-amount">
+                <span>
+                  ₹{{ monthlyInvestment()?.wifi | number:'1.0-2' }}
+                </span>
+              </td>
+              <td>
+                <button type="button"
+                        class="add-expense-button"
+                        (click)="openAddModal('WIFI')">
+                  +
+                </button>
+              </td>
+            </tr>
+
+
+            <!-- Tour -->
+
+            <tr>
+              <td>Tour</td>
+
+              <td class="expense-amount">
+                <span>
+                  ₹{{ monthlyInvestment()?.tour | number:'1.0-2' }}
+                </span>
+              </td>
+              <td>
+                <button type="button"
+                        class="add-expense-button"
+                        (click)="openAddModal('Tour')">
+                  +
+                </button>
+              </td>
+            </tr>
+
+
+            <!-- Friends Tour -->
+
+            <tr>
+              <td>Friends Tour</td>
+
+              <td class="expense-amount">
+                <span>
+                  ₹{{ monthlyInvestment()?.friendsTour | number:'1.0-2' }}
+                </span>
+              </td>
+              <td>
+                <button type="button"
+                        class="add-expense-button"
+                        (click)="openAddModal('Friends Tour')">
+                  +
+                </button>
+              </td>
+            </tr>
+
+
+            <!-- House Product -->
+
+            <tr>
+              <td>House Product</td>
+
+              <td class="expense-amount">
+                <span>
+                  ₹{{ monthlyInvestment()?.houseProduct | number:'1.0-2' }}
+                </span>
+              </td>
+              <td>
+                <button type="button"
+                        class="add-expense-button"
+                        (click)="openAddModal('House Product')">
+                  +
+                </button>
+              </td>
+            </tr>
+
+
+            <!-- Emergency AMT -->
+
+            <tr>
+              <td>Emergency AMT</td>
+
+              <td class="expense-amount">
+                <span>
+                  ₹{{ monthlyInvestment()?.emergencyAmount | number:'1.0-2' }}
+                </span>
+              </td>
+              <td>
+                <button type="button"
+                        class="add-expense-button"
+                        (click)="openAddModal('Emergency AMT')">
+                  +
+                </button>
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+      </div>
+
     </div>
 
+    <!-- Money Borrowed -->
+    <div class="investment-section money-borrow-section">
 
-    <div class="investment-table-container">
+      <div class="section-header money-borrow-header">
+        <h2>Money Borrowed</h2>
 
-      <table class="investment-table">
+        <button type="button"
+                class="add-cell"
+                (click)="openMoneyBorrowModal()"
+                aria-label="Add money borrowed">
+          +
+        </button>
+      </div>
 
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Amount</th>
-            <th></th>
-          </tr>
-        </thead>
+      <div class="investment-table-container">
+        <table class="investment-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Amount</th>
+              <th>Bank</th>
+              <th>Person</th>
+              <th>Action</th>
+            </tr>
+          </thead>
 
-
-        <tbody>
-
-          <!-- Gas Used -->
-
-          <tr>
-            <td>Gas Used</td>
-
-            <td class="expense-amount">
-              <span>
-                ₹{{ monthlyInvestment()?.gasUsed | number:'1.0-2' }}
-              </span>
+          <tbody>
+            @if (moneyBorrows().length === 0) {
+            <tr>
+              <td colspan="5" class="empty-row">
+                No money borrowed records found.
               </td>
-            <td>
-              <button type="button"
-                      class="add-expense-button"
-                      (click)="openAddModal('Gas Used')">
-                +
-              </button>
-            </td>
-          </tr>
-
-
-          <!-- Electricity -->
-
-          <tr>
-            <td>Electricity</td>
-
-            <td class="expense-amount">
-              <span>
-                ₹{{ monthlyInvestment()?.electricity | number:'1.0-2' }}
-              </span>
+            </tr>
+            } @else {
+            @for (borrow of moneyBorrows(); track $index) {
+            <tr>
+              <td>{{ borrow.date }}</td>
+              <td>₹{{ borrow.amount }}</td>
+              <td>{{ borrow.bank }}</td>
+              <td>{{ borrow.person }}</td>
+              <td>
+                <button type="button"
+                        class="delete-button"
+                        (click)="deleteMoneyBorrow(borrow)"
+                        aria-label="Delete money borrowed record">
+                  🗑
+                </button>
               </td>
-            <td>
-              <button type="button"
-                      class="add-expense-button"
-                      (click)="openAddModal('Electricity')">
-                +
-              </button>
-            </td>
-          </tr>
+            </tr>
+            }
+            }
+          </tbody>
 
-
-          <!-- Mobile -->
-
-          <tr>
-            <td>Mobile</td>
-
-            <td class="expense-amount">
-              <span>
-                ₹{{ monthlyInvestment()?.mobile | number:'1.0-2' }}
-              </span>
-              </td>
-            <td>
-              <button type="button"
-                      class="add-expense-button"
-                      (click)="openAddModal('Mobile')">
-                +
-              </button>
-            </td>
-          </tr>
-
-
-          <!-- Gift -->
-
-          <tr>
-            <td>Gift</td>
-
-            <td class="expense-amount">
-              <span>
-                ₹{{ monthlyInvestment()?.gift | number:'1.0-2' }}
-              </span>
-              </td>
-            <td>
-              <button type="button"
-                      class="add-expense-button"
-                      (click)="openAddModal('Gift')">
-                +
-              </button>
-            </td>
-          </tr>
-
-
-          <!-- Car Service -->
-
-          <tr>
-            <td>Car Service</td>
-
-            <td class="expense-amount">
-              <span>
-                ₹{{ monthlyInvestment()?.carService | number:'1.0-2' }}
-              </span>
-              </td>
-            <td>
-              <button type="button"
-                      class="add-expense-button"
-                      (click)="openAddModal('Car Service')">
-                +
-              </button>
-            </td>
-          </tr>
-
-
-          <!-- Car Insurance -->
-
-          <tr>
-            <td>Car Insurance</td>
-
-            <td class="expense-amount">
-              <span>
-                ₹{{ monthlyInvestment()?.carInsurance | number:'1.0-2' }}
-              </span>
-              </td>
-            <td>
-              <button type="button"
-                      class="add-expense-button"
-                      (click)="openAddModal('Car Insurance')">
-                +
-              </button>
-            </td>
-          </tr>
-
-
-          <!-- Bike -->
-
-          <tr>
-            <td>Bike</td>
-
-            <td class="expense-amount">
-              <span>
-                ₹{{ monthlyInvestment()?.bike | number:'1.0-2' }}
-              </span>
-              </td>
-            <td>
-              <button type="button"
-                      class="add-expense-button"
-                      (click)="openAddModal('Bike')">
-                +
-              </button>
-            </td>
-          </tr>
-
-
-          <!-- CNG -->
-
-          <tr>
-            <td>CNG</td>
-
-            <td class="expense-amount">
-              <span>
-                ₹{{ monthlyInvestment()?.cng | number:'1.0-2' }}
-              </span>
-              </td>
-            <td>
-              <button type="button"
-                      class="add-expense-button"
-                      (click)="openAddModal('CNG')">
-                +
-              </button>
-            </td>
-          </tr>
-
-
-          <!-- WIFI -->
-
-          <tr>
-            <td>WIFI</td>
-
-            <td class="expense-amount">
-              <span>
-                ₹{{ monthlyInvestment()?.wifi | number:'1.0-2' }}
-              </span>
-              </td>
-            <td>
-              <button type="button"
-                      class="add-expense-button"
-                      (click)="openAddModal('WIFI')">
-                +
-              </button>
-            </td>
-          </tr>
-
-
-          <!-- Tour -->
-
-          <tr>
-            <td>Tour</td>
-
-            <td class="expense-amount">
-              <span>
-                ₹{{ monthlyInvestment()?.tour | number:'1.0-2' }}
-              </span>
-              </td>
-            <td>
-              <button type="button"
-                      class="add-expense-button"
-                      (click)="openAddModal('Tour')">
-                +
-              </button>
-            </td>
-          </tr>
-
-
-          <!-- Friends Tour -->
-
-          <tr>
-            <td>Friends Tour</td>
-
-            <td class="expense-amount">
-              <span>
-                ₹{{ monthlyInvestment()?.friendsTour | number:'1.0-2' }}
-              </span>
-              </td>
-            <td>
-              <button type="button"
-                      class="add-expense-button"
-                      (click)="openAddModal('Friends Tour')">
-                +
-              </button>
-            </td>
-          </tr>
-
-
-          <!-- House Product -->
-
-          <tr>
-            <td>House Product</td>
-
-            <td class="expense-amount">
-              <span>
-                ₹{{ monthlyInvestment()?.houseProduct | number:'1.0-2' }}
-              </span>
-              </td>
-            <td>
-              <button type="button"
-                      class="add-expense-button"
-                      (click)="openAddModal('House Product')">
-                +
-              </button>
-            </td>
-          </tr>
-
-
-          <!-- Emergency AMT -->
-
-          <tr>
-            <td>Emergency AMT</td>
-
-            <td class="expense-amount">
-              <span>
-                ₹{{ monthlyInvestment()?.emergencyAmount | number:'1.0-2' }}
-              </span>
-              </td>
-            <td>
-              <button type="button"
-                      class="add-expense-button"
-                      (click)="openAddModal('Emergency AMT')">
-                +
-              </button>
-            </td>
-          </tr>
-
-        </tbody>
-
-      </table>
+        </table>
+      </div>
 
     </div>
 
   </div>
+
 
 
   <!-- ================= ADD MODAL ================= -->
@@ -513,3 +576,111 @@
   }
 
 </div>
+<!----------------------------------Monney borrow modal------------------------------->
+@if (showMoneyBorrowModal()) {
+<div class="modal-overlay" (click)="closeMoneyBorrowModal()">
+
+  <div class="modal-card" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <h2>Money Borrow</h2>
+
+      <button type="button"
+              class="close-button"
+              (click)="closeMoneyBorrowModal()">
+        ×
+      </button>
+    </div>
+
+    <form (submit)="$event.preventDefault(); saveMoneyBorrow()">
+
+      <div class="form-grid">
+
+        <!-- Date -->
+        <div class="form-group">
+          <label for="borrowDate">Date</label>
+
+          <input id="borrowDate"
+                 type="date"
+                 [ngModel]="moneyBorrowDate()"
+                 (ngModelChange)="moneyBorrowDate.set($event)"
+                 name="borrowDate" />
+        </div>
+
+        <!-- Amount -->
+        <div class="form-group">
+          <label for="borrowAmount">Amount</label>
+
+          <input id="borrowAmount"
+                 type="number"
+                 min="0"
+                 [ngModel]="moneyBorrowAmount()"
+                 (ngModelChange)="moneyBorrowAmount.set($event)"
+                 name="borrowAmount"
+                 placeholder="Enter amount" />
+        </div>
+
+        <!-- Bank -->
+        <div class="form-group">
+          <label for="borrowBank">Bank</label>
+
+          <select id="borrowBank"
+                  [ngModel]="moneyBorrowBank()"
+                  (ngModelChange)="moneyBorrowBank.set($event)"
+                  name="borrowBank">
+
+            <option value="">Select Bank</option>
+            <option value="AU Bank">AU Bank</option>
+            <option value="CC Bank">CC Bank</option>
+            <option value="IDFC Bank">IDFC Bank</option>
+
+          </select>
+        </div>
+
+        <!-- Person -->
+        <div class="form-group">
+          <label for="borrowPerson">Name / Person</label>
+
+          <input id="borrowPerson"
+                 type="text"
+                 [ngModel]="moneyBorrowPerson()"
+                 (ngModelChange)="moneyBorrowPerson.set($event)"
+                 name="borrowPerson"
+                 placeholder="Enter name" />
+        </div>
+
+        <!-- Comments -->
+        <div class="form-group full-width">
+          <label for="borrowComments">Comments</label>
+
+          <textarea id="borrowComments"
+                    rows="3"
+                    [ngModel]="moneyBorrowComments()"
+                    (ngModelChange)="moneyBorrowComments.set($event)"
+                    name="borrowComments"
+                    placeholder="Optional"></textarea>
+        </div>
+
+      </div>
+
+      <div class="modal-actions">
+
+        <button type="button"
+                class="cancel-button"
+                (click)="closeMoneyBorrowModal()">
+          Cancel
+        </button>
+
+        <button type="submit"
+                class="save-button">
+          Add
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+}

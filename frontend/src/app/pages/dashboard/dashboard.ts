@@ -58,7 +58,6 @@ export class Dashboard implements OnInit {
     this.transactionService.getRecentTransactions().subscribe({
       next: (transactions) => {
         this.transactions = transactions;
-        console.log('Recent transactions loaded:', transactions);
       },
       error: (error) => {
         console.error('Error loading recent transactions:', error);
@@ -69,13 +68,9 @@ export class Dashboard implements OnInit {
   private loadOwnedLists(): void {
     this.ownedListService.getOwnedList().subscribe({
       next: (data) => {
-        console.log('API data:', data);
-
         if (data && data.length > 0) {
           this.lastOwnedList.set(data[0]);
           this.ownedLists = data;
-
-          console.log('lastOwnedList assigned:', this.lastOwnedList());
         }
       },
       error: (error) => {
@@ -83,9 +78,8 @@ export class Dashboard implements OnInit {
       }
     });
   }
-  goToOwnedList(): void {
-    console.log('Passing to Owned List:', this.ownedLists);
 
+  goToOwnedList(): void {
     this.router.navigate(['/owned-list'], {
       state: {
         ownedLists: this.ownedLists
@@ -97,7 +91,6 @@ export class Dashboard implements OnInit {
     this.loanService.getLoanSummary().subscribe({
       next: (data) => {
         this.loanSummary.set(data);
-        console.log('Loan summary loaded:', data);
       },
       error: (error) => {
         console.error('Error loading loan summary:', error);
@@ -109,7 +102,6 @@ export class Dashboard implements OnInit {
     this.monthlyInvestmentService.getMonthlyInvestment().subscribe({
       next: (data) => {
         this.monthlyInvestment.set(data);
-        console.log('Monthly investment loaded:', data);
       },
       error: (error) => {
         console.error('Error loading monthly investment:', error);

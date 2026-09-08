@@ -5,12 +5,13 @@ import { LoanSummary } from '../../../models/loan-summary';
 import { Loan as LoanModel } from '../../../models/loan';
 import { LoanRepayment } from '../../../models/loan-repayment';
 import { RouterLink } from '@angular/router';
+import { BackButton } from '../../components/back-button/back-button';
 
 
 @Component({
   selector: 'loan',
   standalone: true,
-  imports: [CommonModule, RouterLink, NgIf],
+  imports: [CommonModule, RouterLink, NgIf, BackButton],
   templateUrl: './loan.html',
   styleUrl: './loan.css'
 })
@@ -90,7 +91,6 @@ export class Loan implements OnInit {
     this.loanService.getLoanRepayments().subscribe({
       next: (data) => {
         this.repayments.set(data);
-        console.log("loading repayments", data)
       },
       error: (error) => {
         console.error('Error loading repayments:', error);
