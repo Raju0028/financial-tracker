@@ -4,6 +4,7 @@ import { OwnedList as OwnedListModel } from '../../../models/owned-list';
 import { DecimalPipe, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { OwnedListService } from '../../../services/OwnedList.service';
+import { BackButton } from '../../components/back-button/back-button';
 
 @Component({
   selector: 'app-owned-list',
@@ -12,7 +13,8 @@ import { OwnedListService } from '../../../services/OwnedList.service';
     RouterLink,
     DecimalPipe,
     FormsModule,
-    NgIf
+    NgIf,
+    BackButton
   ],
   styleUrl: './owned-list.css',
   templateUrl: './owned-list.html',

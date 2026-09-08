@@ -8,11 +8,12 @@ import { MoneyBorrowService } from '../../../services/MoneyBorrow.service';
 import { AddMonthlyInvestment } from '../../../models/add-monthly-investment';
 import { FormsModule } from '@angular/forms';
 import { MoneyBorrow } from '../../../models/money-borrow';
+import { BackButton } from '../../components/back-button/back-button';
 
 @Component({
   selector: 'monthly-investment',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule, BackButton],
   templateUrl: './monthly-investment.html',
   styleUrl: './monthly-investment.css'
 })
@@ -84,7 +85,6 @@ export class MonthlyInvestmentPage implements OnInit,OnDestroy {
     this.monthlyInvestmentService.getMonthlyInvestment().subscribe({
       next: (data) => {
         this.monthlyInvestment.set(data);
-        console.log('Monthly investment loaded:', data);
       },
       error: (error) => {
         console.error(
@@ -100,12 +100,8 @@ export class MonthlyInvestmentPage implements OnInit,OnDestroy {
   }
 
   openAddModal(expense: string): void {
-    console.log('Expense clicked:', expense);
-
     this.selectedMonth.set(this.getCurrentMonth());
     this.selectedExpense.set(expense);
-
-    console.log('Selected expense:', this.selectedExpense());
     this.isAddModalOpen.set(true);
 
     this.loadExistingPrices();
@@ -227,7 +223,6 @@ export class MonthlyInvestmentPage implements OnInit,OnDestroy {
     this.moneyBorrowService.getMoneyBorrow().subscribe({
       next: (borrows) => {
         this.moneyBorrows.set(borrows);
-        console.log('Money borrowed records loaded:', borrows);
       },
       error: (error) => {
         console.error('Error loading money borrowed records:', error);

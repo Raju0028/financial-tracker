@@ -182,41 +182,85 @@ public class LoanService
 
     public async Task AddLoanAsync(Loan loan)
     {
-        var values = new List<object>
-    {
-        loan.Date,
-        loan.LoanAmount,
-        loan.Duration,
-        loan.From,
-        loan.TotalLoan,
-        loan.Status
-    };
-
-        var valueRange = new Google.Apis.Sheets.v4.Data.ValueRange
-        {
-            Values = new List<IList<object>>
-        {
-            values
-        }
-        };
-
-        var request = _sheetsService.Spreadsheets.Values.Append(
-            valueRange,
+        // Get existing loan rows to find the next available row.
+        var getRequest = _sheetsService.Spreadsheets.Values.Get(
             _spreadsheetId,
             "Loan!A:F");
 
-        request.ValueInputOption =
-            SpreadsheetsResource.ValuesResource.AppendRequest
+        var response = await getRequest.ExecuteAsync();
+
+        var rows = response.Values ?? new List<IList<object>>();
+
+        var nextRow = 2;
+
+        for (var i = 1; i < rows.Count; i++)
+        {
+            if (rows[i].Count > 0 &&
+                !string.IsNullOrWhiteSpace(rows[i][0]?.ToString()))
+            {
+                nextRow = i + 2;
+            }
+        }
+        Console.WriteLine($"Loan will be written to row: {nextRow}");
+        // Write only A:D.
+        // Column E contains the Google Sheet formula, so we don't overwrite it.
+        var loanValues = new List<IList<object>>
+    {
+        new List<object>
+        {
+            loan.Date,
+            loan.LoanAmount,
+            loan.Duration,
+            loan.From
+        }
+    };
+
+        var loanValueRange =
+            new Google.Apis.Sheets.v4.Data.ValueRange
+            {
+                Values = loanValues
+            };
+
+        var loanUpdateRequest =
+            _sheetsService.Spreadsheets.Values.Update(
+                loanValueRange,
+                _spreadsheetId,
+                $"Loan!A{nextRow}:D{nextRow}");
+
+        loanUpdateRequest.ValueInputOption =
+            SpreadsheetsResource.ValuesResource.UpdateRequest
                 .ValueInputOptionEnum.USERENTERED;
 
-        request.InsertDataOption =
-            SpreadsheetsResource.ValuesResource.AppendRequest
-                .InsertDataOptionEnum.INSERTROWS;
-        // Add to Loan sheet first
-        await request.ExecuteAsync();
+        await loanUpdateRequest.ExecuteAsync();
 
-        // Only after successful Loan insertion,
-        // add it to RecentTransactions
+        // Write Status separately to column F.
+        var statusValues = new List<IList<object>>
+    {
+        new List<object>
+        {
+            loan.Status
+        }
+    };
+
+        var statusValueRange =
+            new Google.Apis.Sheets.v4.Data.ValueRange
+            {
+                Values = statusValues
+            };
+
+        var statusUpdateRequest =
+            _sheetsService.Spreadsheets.Values.Update(
+                statusValueRange,
+                _spreadsheetId,
+                $"Loan!F{nextRow}:F{nextRow}");
+
+        statusUpdateRequest.ValueInputOption =
+            SpreadsheetsResource.ValuesResource.UpdateRequest
+                .ValueInputOptionEnum.USERENTERED;
+
+        await statusUpdateRequest.ExecuteAsync();
+
+        // Add to RecentTransactions only after successful Loan insertion.
         var transaction = new Transaction
         {
             Date = loan.Date,
@@ -226,45 +270,60 @@ public class LoanService
             Amount = loan.LoanAmount
         };
 
-        await _transactionService.AddRecentTransactionAsync(
-            transaction);
+        await _transactionService.AddRecentTransactionAsync(transaction);
     }
 
     public async Task AddLoanRepaymentAsync(LoanRepayment repayment)
     {
-        var values = new List<object>
-    {
-        repayment.Date,
-        repayment.RepaymentAmount,
-        repayment.To
-    };
-
-        var valueRange = new Google.Apis.Sheets.v4.Data.ValueRange
-        {
-            Values = new List<IList<object>>
-        {
-            values
-        }
-        };
-
-        var request = _sheetsService.Spreadsheets.Values.Append(
-            valueRange,
+        // Get existing repayment rows to find the next available row.
+        var getRequest = _sheetsService.Spreadsheets.Values.Get(
             _spreadsheetId,
             "Loan!H:J");
 
-        request.ValueInputOption =
-            SpreadsheetsResource.ValuesResource.AppendRequest
+        var response = await getRequest.ExecuteAsync();
+
+        var rows = response.Values ?? new List<IList<object>>();
+
+        var nextRow = 2;
+
+        for (var i = 1; i < rows.Count; i++)
+        {
+            if (rows[i].Count > 0 &&
+                !string.IsNullOrWhiteSpace(rows[i][0]?.ToString()))
+            {
+                nextRow = i + 2;
+            }
+        }
+
+        var repaymentValues = new List<IList<object>>
+    {
+        new List<object>
+        {
+            repayment.Date,
+            repayment.RepaymentAmount,
+            repayment.To
+        }
+    };
+
+        var valueRange =
+            new Google.Apis.Sheets.v4.Data.ValueRange
+            {
+                Values = repaymentValues
+            };
+
+        var updateRequest =
+            _sheetsService.Spreadsheets.Values.Update(
+                valueRange,
+                _spreadsheetId,
+                $"Loan!H{nextRow}:J{nextRow}");
+
+        updateRequest.ValueInputOption =
+            SpreadsheetsResource.ValuesResource.UpdateRequest
                 .ValueInputOptionEnum.USERENTERED;
 
-        request.InsertDataOption =
-            SpreadsheetsResource.ValuesResource.AppendRequest
-                .InsertDataOptionEnum.INSERTROWS;
+        await updateRequest.ExecuteAsync();
 
-        // Add repayment to Loan sheet first
-        await request.ExecuteAsync();
-
-        // Only after successful repayment insertion,
-        // add it to RecentTransactions
+        // Add to RecentTransactions only after successful repayment insertion.
         var transaction = new Transaction
         {
             Date = repayment.Date,
