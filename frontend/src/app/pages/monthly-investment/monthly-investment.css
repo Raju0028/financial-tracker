@@ -94,11 +94,34 @@
   }
 
 
-/* ================= EXPENSE SECTION ================= */
+/* ================= TABLES ROW ================= */
+
+.tables-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  width: 100%;
+}
+
+
+/* ================= SECTIONS ================= */
 
 .investment-section {
   margin-top: 30px;
 }
+
+.tables-row .investment-section:first-child {
+  flex: 0 0 55%;
+  min-width: 0;
+}
+
+.tables-row .money-borrow-section {
+  flex: 1;
+  min-width: 0;
+}
+
+
+/* ================= SECTION HEADER ================= */
 
 .section-header {
   margin-bottom: 15px;
@@ -114,8 +137,8 @@
 /* ================= TABLE ================= */
 
 .investment-table-container {
-  width: 70%;
-  max-width: 900px;
+  width: 100%;
+  max-width: none;
   background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
@@ -153,40 +176,139 @@
   }
 
 
-  /* ================= TABLE COLUMNS ================= */
+/* ================= MONTHLY EXPENSE COLUMNS ================= */
 
-  /* Title */
-
-  .investment-table th:first-child,
-  .investment-table td:first-child {
-    width: 50%;
-    text-align: left;
-  }
-
+/* Title */
+.tables-row .investment-section:first-child
+.investment-table th:first-child,
+.tables-row .investment-section:first-child
+.investment-table td:first-child {
+  width: 50%;
+  text-align: left;
+}
 
 /* Amount */
+.tables-row .investment-section:first-child
+.investment-table th:nth-child(2),
+.tables-row .investment-section:first-child
+.investment-table td:nth-child(2) {
+  width: 35%;
+  text-align: center;
+}
 
+/* Add */
+.tables-row .investment-section:first-child
+.investment-table th:nth-child(3),
+.tables-row .investment-section:first-child
+.investment-table td:nth-child(3) {
+  width: 15%;
+  text-align: center;
+}
+
+/* Amount cell */
+.tables-row .investment-section:first-child
 .amount-cell {
   width: 35%;
   text-align: center;
   white-space: nowrap;
 }
 
-
-/* Add */
-
+/* Add header */
+.tables-row .investment-section:first-child
 .add-header {
   width: 15%;
   text-align: center !important;
 }
 
+/* Add cell */
+.tables-row .investment-section:first-child
 .add-cell {
   width: 15%;
   text-align: center;
 }
 
 
-/* ================= ADD BUTTON ================= */
+/* ================= MONEY BORROWED TABLE ================= */
+
+.money-borrow-section .investment-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+  /* Date */
+  .money-borrow-section .investment-table th:nth-child(1),
+  .money-borrow-section .investment-table td:nth-child(1) {
+    width: 24%;
+  }
+
+  /* Amount */
+  .money-borrow-section .investment-table th:nth-child(2),
+  .money-borrow-section .investment-table td:nth-child(2) {
+    width: 18%;
+  }
+
+  /* Bank */
+  .money-borrow-section .investment-table th:nth-child(3),
+  .money-borrow-section .investment-table td:nth-child(3) {
+    width: 22%;
+  }
+
+  /* Person */
+  .money-borrow-section .investment-table th:nth-child(4),
+  .money-borrow-section .investment-table td:nth-child(4) {
+    width: 23%;
+  }
+
+  /* Action */
+  .money-borrow-section .investment-table th:nth-child(5),
+  .money-borrow-section .investment-table td:nth-child(5) {
+    width: 13%;
+    text-align: center;
+  }
+
+  /* Prevent content from breaking the table */
+  .money-borrow-section .investment-table th,
+  .money-borrow-section .investment-table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+/* Money Borrowed container */
+.money-borrow-section .investment-table-container {
+  overflow-x: auto;
+}
+
+
+/* ================= DELETE BUTTON ================= */
+
+.delete-button {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+  .delete-button:hover {
+    background: #fecaca;
+    transform: scale(1.08);
+  }
+
+  .delete-button:active {
+    transform: scale(0.95);
+  }
+
+
+/* ================= ADD EXPENSE BUTTON ================= */
 
 .add-expense-button {
   width: 34px;
@@ -273,6 +395,43 @@
   }
 
 
+/* ================= MONEY BORROW HEADER ================= */
+
+.money-borrow-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 18px;
+}
+
+  .money-borrow-header .add-cell {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+
+    .money-borrow-header .add-cell:hover {
+      background: #1d4ed8;
+      transform: scale(1.08);
+    }
+
+    .money-borrow-header .add-cell:active {
+      transform: scale(0.95);
+    }
+
+
 /* ================================================= */
 /* ================= MOBILE ======================== */
 /* ================================================= */
@@ -314,11 +473,23 @@
   }
 
 
-  /* Table */
+  /* Tables */
+
+  .tables-row {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+    .tables-row .investment-section:first-child,
+    .tables-row .money-borrow-section {
+      flex: none;
+      width: 100%;
+    }
 
   .investment-table-container {
     width: 100%;
-    overflow: hidden;
+    max-width: none;
+    overflow-x: auto;
   }
 
   .investment-table {
@@ -334,30 +505,54 @@
     }
 
 
-      /* Mobile column widths */
+  /* Monthly Expenses mobile columns */
 
-      .investment-table th:first-child,
-      .investment-table td:first-child {
-        width: 50%;
-        text-align: left;
-      }
+  .tables-row .investment-section:first-child
+  .investment-table th:first-child,
+  .tables-row .investment-section:first-child
+  .investment-table td:first-child {
+    width: 50%;
+    text-align: left;
+  }
 
+  .tables-row .investment-section:first-child
   .amount-cell {
     width: 35%;
     text-align: center;
     white-space: nowrap;
   }
 
+  .tables-row .investment-section:first-child
   .add-header,
+  .tables-row .investment-section:first-child
   .add-cell {
     width: 15%;
     text-align: center !important;
   }
 
 
+  /* Money Borrowed mobile */
+
+  .money-borrow-section .investment-table {
+    min-width: 560px;
+  }
+
+    .money-borrow-section .investment-table th,
+    .money-borrow-section .investment-table td {
+      padding: 12px 8px;
+      font-size: 13px;
+    }
+
+
   /* Add button */
 
   .add-expense-button {
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+  }
+
+  .money-borrow-header .add-cell {
     width: 30px;
     height: 30px;
     font-size: 20px;

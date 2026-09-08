@@ -4,8 +4,10 @@ import { MonthlyInvestmentService } from '../../../services/MonthlyInvestment.se
 import { MonthlyInvestment } from '../../../models/monthly-investment';
 import { RouterLink } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { MoneyBorrowService } from '../../../services/MoneyBorrow.service';
 import { AddMonthlyInvestment } from '../../../models/add-monthly-investment';
 import { FormsModule } from '@angular/forms';
+import { MoneyBorrow } from '../../../models/money-borrow';
 
 @Component({
   selector: 'monthly-investment',
@@ -16,10 +18,21 @@ import { FormsModule } from '@angular/forms';
 })
 export class MonthlyInvestmentPage implements OnInit,OnDestroy {
 
-  private readonly monthlyInvestmentService =
-    inject(MonthlyInvestmentService);
+  private readonly monthlyInvestmentService = inject(MonthlyInvestmentService);
+
+  private readonly moneyBorrowService = inject(MoneyBorrowService);
 
   monthlyInvestment = signal<MonthlyInvestment | null>(null);
+  moneyBorrows = signal<MoneyBorrow[]>([]);
+  showMoneyBorrowModal = signal(false);
+
+  moneyBorrowDate = signal('');
+  moneyBorrowAmount = signal<number | null>(null);
+  moneyBorrowBank = signal('');
+  moneyBorrowPerson = signal('');
+  moneyBorrowComments = signal('');
+  moneyBorrowRowNumber = signal<number | null>(null);
+  moneyBorrowSheetName = signal('');
 
   months = [
     'January',
@@ -64,6 +77,7 @@ export class MonthlyInvestmentPage implements OnInit,OnDestroy {
 
   ngOnInit(): void {
     this.loadMonthlyInvestment();
+    this.loadMoneyBorrows();
   }
 
   private loadMonthlyInvestment(): void {
@@ -205,6 +219,98 @@ export class MonthlyInvestmentPage implements OnInit,OnDestroy {
           );
 
           alert('Failed to add monthly investment.');
+        }
+      });
+  }
+
+  private loadMoneyBorrows(): void {
+    this.moneyBorrowService.getMoneyBorrow().subscribe({
+      next: (borrows) => {
+        this.moneyBorrows.set(borrows);
+        console.log('Money borrowed records loaded:', borrows);
+      },
+      error: (error) => {
+        console.error('Error loading money borrowed records:', error);
+      }
+    });
+  }
+
+  openMoneyBorrowModal(): void {
+    const today = new Date();
+
+    const date = today.toISOString().split('T')[0];
+
+    this.moneyBorrowRowNumber.set(null);
+    this.moneyBorrowSheetName.set('');
+    this.moneyBorrowDate.set(date);
+    this.moneyBorrowAmount.set(null);
+    this.moneyBorrowBank.set('');
+    this.moneyBorrowPerson.set('');
+    this.moneyBorrowComments.set('');
+
+    this.showMoneyBorrowModal.set(true);
+  }
+
+  closeMoneyBorrowModal(): void {
+    this.showMoneyBorrowModal.set(false);
+  }
+
+  saveMoneyBorrow(): void {
+    if (!this.moneyBorrowAmount() || this.moneyBorrowAmount()! <= 0) {
+      alert('Please enter a valid amount.');
+      return;
+    }
+
+    if (!this.moneyBorrowBank()) {
+      alert('Please select a bank.');
+      return;
+    }
+
+    if (!this.moneyBorrowPerson().trim()) {
+      alert('Please enter the name/person.');
+      return;
+    }
+
+    const moneyBorrow: MoneyBorrow = {
+      date: this.moneyBorrowDate(),
+      amount: this.moneyBorrowAmount()!,
+      bank: this.moneyBorrowBank(),
+      person: this.moneyBorrowPerson().trim(),
+      comments: this.moneyBorrowComments().trim()
+    };
+
+    this.moneyBorrowService.addMoneyBorrow(moneyBorrow).subscribe({
+      next: () => {
+        this.closeMoneyBorrowModal();
+        this.loadMoneyBorrows();
+        this.loadMonthlyInvestment();
+      },
+      error: (error) => {
+        console.error('Error adding money borrowed record:', error);
+        alert('Failed to add money borrowed record.');
+      }
+    });
+  }
+
+  deleteMoneyBorrow(borrow: MoneyBorrow): void {
+    const confirmed = confirm(
+      `Are you sure you want to delete the borrowing of ₹${borrow.amount} from ${borrow.person}?`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.moneyBorrowService
+      .deleteMoneyBorrow(borrow.sheetName!, borrow.rowNumber!)
+      .subscribe({
+        next: () => {
+          this.loadMoneyBorrows();
+          this.loadMonthlyInvestment();
+        },
+        error: (error) => {
+          console.error('Error deleting money borrowed record:', error);
+          alert('Failed to delete money borrowed record.');
         }
       });
   }

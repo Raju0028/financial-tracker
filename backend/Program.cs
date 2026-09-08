@@ -17,6 +17,7 @@ builder.Services.AddSingleton<TransactionService>();
 builder.Services.AddSingleton<OwnedListService>();
 builder.Services.AddSingleton<MonthlyInvestmentService>();
 builder.Services.AddSingleton<LoanService>();
+builder.Services.AddSingleton<MoneyBorrowService>();
 
 // Add OpenAPI
 builder.Services.AddOpenApi();
